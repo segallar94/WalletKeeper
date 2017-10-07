@@ -2,19 +2,28 @@ package cl.usm.inf.walletkeeper;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import cl.usm.inf.walletkeeper.structs.HistoryEntryData;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    /// AQUI ESTA LAs WEAs DE LISTA que necesitamos
+    private RecyclerView mRecordHistoryListRecycler;
+    private RecyclerView.Adapter mRecordHistoryListAdapter;
+    private RecyclerView.LayoutManager mRecordHistoryListRecyclerLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +49,31 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // ....Y AQUI ESTA EL RESTO
+        mRecordHistoryListRecycler = (RecyclerView) findViewById(R.id.recordHistoryList);
+        mRecordHistoryListRecyclerLayoutManager = new LinearLayoutManager(this);
+        mRecordHistoryListRecycler.setLayoutManager(mRecordHistoryListRecyclerLayoutManager);
+
+            //CON DATOS DE PRUEBA
+        HistoryEntryData[] myDataset = {
+                new HistoryEntryData(-1000f,"kadjsnfsncan sfafasf", 0),
+                new HistoryEntryData(-200f,"davison stoffelson", 1),
+                new HistoryEntryData(-100000f,"me kgo sjfkodjn", 0),
+                new HistoryEntryData(-100000f,"mi poto", 3),
+                new HistoryEntryData(-14f,"HA HA", 3),
+                new HistoryEntryData(-20f,"RELLENO", 0),
+                new HistoryEntryData(-20f,"RELLENO", 0),
+                new HistoryEntryData(-20f,"RELLENO", 0),
+                new HistoryEntryData(-20f,"RELLENO", 0),
+                new HistoryEntryData(-20f,"RELLENO", 0),
+                new HistoryEntryData(-20f,"RELLENO", 0),
+                new HistoryEntryData(-1000f,"claudio torres", 2)
+        };
+
+        // specify an adapter (see also next example)
+        mRecordHistoryListAdapter = new IconTitlDescListAdapter(myDataset);
+        mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
     }
 
     @Override
