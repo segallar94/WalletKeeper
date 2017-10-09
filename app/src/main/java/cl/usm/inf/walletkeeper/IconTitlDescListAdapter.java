@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import cl.usm.inf.walletkeeper.structs.HistoryEntryData;
@@ -18,12 +19,13 @@ public class IconTitlDescListAdapter extends RecyclerView.Adapter<IconTitlDescLi
 
         public TextView txtSecondLine;
         public TextView txtFirstLine;
-        //public ImageView imgViewIcon;
+        public ImageView imgIcon;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            txtFirstLine = (TextView) itemLayoutView.findViewById(R.id.firstLine);
-            txtSecondLine = (TextView) itemLayoutView.findViewById(R.id.secondLine);
+            txtFirstLine = (TextView) itemLayoutView.findViewById(R.id.listFirstLine);
+            txtSecondLine = (TextView) itemLayoutView.findViewById(R.id.listSecondLine);
+            imgIcon = (ImageView) itemLayoutView.findViewById(R.id.listIcon);
         }
     }
 
@@ -52,7 +54,7 @@ public class IconTitlDescListAdapter extends RecyclerView.Adapter<IconTitlDescLi
         viewHolder.txtFirstLine.setText(itemsData[position].getValue());
         viewHolder.txtFirstLine.setTextColor(itemsData[position].getValueColor(context));
         viewHolder.txtSecondLine.setText(itemsData[position].getDescription());
-        //viewHolder.imgViewIcon.setImageResource("LOLOLOLO"/*itemsData[position].getImageUrl()*/);
+        viewHolder.imgIcon.setImageDrawable(itemsData[position].getIconCategory(context));
     }
 
     // Return the size of your itemsData (invoked by the layout manager)

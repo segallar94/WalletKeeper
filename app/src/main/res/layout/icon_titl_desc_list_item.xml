@@ -5,7 +5,7 @@
     android:padding="6dip" >
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/listIcon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -14,13 +14,13 @@
         android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/firstLine"
+        android:id="@+id/listFirstLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
+        android:layout_toRightOf="@id/listIcon"
         android:gravity="center_vertical"
         android:text="-$1990"
         android:textAllCaps="true"
@@ -28,13 +28,13 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/secondLine"
+        android:id="@+id/listSecondLine"
         android:layout_width="match_parent"
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/firstLine"
-        android:layout_toRightOf="@id/icon"
+        android:layout_below="@id/listFirstLine"
+        android:layout_toRightOf="@id/listIcon"
         android:ellipsize="marquee"
         android:maxLines="2"
         android:text="Description"

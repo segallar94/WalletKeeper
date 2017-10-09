@@ -1,6 +1,7 @@
 package cl.usm.inf.walletkeeper.structs;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
 import cl.usm.inf.walletkeeper.R;
@@ -41,4 +42,18 @@ public class HistoryEntryData {
     }
 
     public String getDescription() { return desc; }
+
+    public Drawable getIconCategory(Context context){
+        int res;
+
+        switch (cat){
+            case 0 :
+                res = R.mipmap.ic_launcher_round;
+                break;
+            default:
+                res = R.mipmap.ic_launcher_round;
+        }
+
+        return ContextCompat.getDrawable(context, res);
+    }
 }
