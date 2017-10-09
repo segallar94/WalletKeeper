@@ -22,8 +22,10 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
-        android:text="Title"
-        android:textSize="16sp" />
+        android:text="-$1990"
+        android:textAllCaps="true"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/secondLine"

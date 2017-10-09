@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
         };
 
         // specify an adapter (see also next example)
-        mRecordHistoryListAdapter = new IconTitlDescListAdapter(myDataset);
+        mRecordHistoryListAdapter = new IconTitlDescListAdapter(this, myDataset);
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
     }
 

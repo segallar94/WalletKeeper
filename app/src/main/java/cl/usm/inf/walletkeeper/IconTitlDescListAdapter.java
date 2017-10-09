@@ -1,5 +1,6 @@
 package cl.usm.inf.walletkeeper;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import cl.usm.inf.walletkeeper.structs.HistoryEntryData;
 
 public class IconTitlDescListAdapter extends RecyclerView.Adapter<IconTitlDescListAdapter.ViewHolder> {
+    private Context context;
     private HistoryEntryData[] itemsData;
 
     // inner class to hold a reference to each item of RecyclerView
@@ -25,7 +27,8 @@ public class IconTitlDescListAdapter extends RecyclerView.Adapter<IconTitlDescLi
         }
     }
 
-    public IconTitlDescListAdapter(HistoryEntryData[] itemsData) {
+    public IconTitlDescListAdapter(Context context, HistoryEntryData[] itemsData) {
+        this.context = context;
         this.itemsData = itemsData;
     }
 
@@ -47,6 +50,7 @@ public class IconTitlDescListAdapter extends RecyclerView.Adapter<IconTitlDescLi
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
         viewHolder.txtFirstLine.setText(itemsData[position].getValue());
+        viewHolder.txtFirstLine.setTextColor(itemsData[position].getValueColor(context));
         viewHolder.txtSecondLine.setText(itemsData[position].getDescription());
         //viewHolder.imgViewIcon.setImageResource("LOLOLOLO"/*itemsData[position].getImageUrl()*/);
     }
