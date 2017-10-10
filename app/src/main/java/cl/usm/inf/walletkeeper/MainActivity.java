@@ -115,12 +115,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        Date todaysDate = new Date();
         if(requestCode == 1){
             if  (resultCode == RESULT_OK){
                 String nombre = data.getStringExtra("nombre");
                 float precio = data.getFloatExtra("precio",0);
                 int categoria = data.getIntExtra("categoria",1);
-                new HistoryEntryData(precio * -1,nombre,categoria);
+                new AccountEntryData(precio * -1,nombre,categoria,todaysDate);
                 Log.w("nombre",nombre);
                 Log.w("precio",String.valueOf(precio));
             }
