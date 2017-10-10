@@ -6,11 +6,14 @@
 
     <ImageView
         android:id="@+id/listIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dip"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="centerInside"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
