@@ -17,7 +17,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import cl.usm.inf.walletkeeper.structs.HistoryEntryData;
+import java.util.Date;
+
+import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
+import cl.usm.inf.walletkeeper.structs.AccountEntryData;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,23 +60,24 @@ public class MainActivity extends AppCompatActivity
         mRecordHistoryListRecycler.setLayoutManager(mRecordHistoryListRecyclerLayoutManager);
 
             //CON DATOS DE PRUEBA
-        HistoryEntryData[] myDataset = {
-                new HistoryEntryData(-1000f,"kadjsnfsncan sfafasf", 0),
-                new HistoryEntryData(-200f,"davison stoffelson", 1),
-                new HistoryEntryData(-100000f,"me kgo sjfkodjn", 0),
-                new HistoryEntryData(-100000f,"mi poto", 3),
-                new HistoryEntryData(-14f,"HA HA", 3),
-                new HistoryEntryData(-20f,"RELLENO", 0),
-                new HistoryEntryData(-20f,"RELLENO", 0),
-                new HistoryEntryData(-20f,"RELLENO", 0),
-                new HistoryEntryData(-20f,"RELLENO", 0),
-                new HistoryEntryData(-20f,"RELLENO", 0),
-                new HistoryEntryData(-20f,"RELLENO", 0),
-                new HistoryEntryData(-1000f,"claudio torres", 2)
+        Date todaysDate = new Date();
+        AccountEntryData[] myDataset = {
+                new AccountEntryData(-1000f,"kadjsnfsncan sfafasf", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-200f,"davison stoffelson", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-100000f,"me kgo sjfkodjn", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-100000f,"mi poto", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-14f,"HA HA", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
+                new AccountEntryData(-1000f,"claudio torres", (int)(Math.random() * 10), todaysDate)
         };
 
-        // specify an adapter (see also next example)
-        mRecordHistoryListAdapter = new IconTitlDescListAdapter(myDataset);
+        // specify an adapter
+        mRecordHistoryListAdapter = new AccountEntryListAdapter(this, myDataset);
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
     }
 
