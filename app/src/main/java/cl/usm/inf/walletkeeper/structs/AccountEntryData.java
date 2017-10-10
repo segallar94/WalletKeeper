@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
+import com.google.gson.Gson;
+
 import java.util.Date;
 
 import cl.usm.inf.walletkeeper.R;
@@ -72,4 +74,6 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
     }
 
     public Date getDate() { return date; }
+
+    public String getJson() { return new Gson().toJson(this); }
 }
