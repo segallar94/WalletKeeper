@@ -1,5 +1,6 @@
 package cl.usm.inf.walletkeeper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -12,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -36,8 +38,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivityForResult(new Intent(MainActivity.this,Pop.class),1);
             }
         });
 
@@ -106,6 +107,23 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == 1){
+            if  (resultCode == RESULT_OK){
+                String nombre = data.getStringExtra("nombre");
+                float precio = data.getFloatExtra("precio",0);
+                int categoria = data.getIntExtra("categoria",1);
+                new HistoryEntryData(precio * -1,nombre,categoria);
+                Log.w("nombre",nombre);
+                Log.w("precio",String.valueOf(precio));
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
