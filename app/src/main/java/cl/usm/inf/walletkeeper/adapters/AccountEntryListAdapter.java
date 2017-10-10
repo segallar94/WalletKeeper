@@ -1,4 +1,4 @@
-package cl.usm.inf.walletkeeper;
+package cl.usm.inf.walletkeeper.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,11 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import cl.usm.inf.walletkeeper.structs.HistoryEntryData;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public class IconTitlDescListAdapter extends RecyclerView.Adapter<IconTitlDescListAdapter.ViewHolder> {
+import cl.usm.inf.walletkeeper.R;
+import cl.usm.inf.walletkeeper.structs.AccountEntryData;
+
+public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryListAdapter.ViewHolder> {
     private Context context;
-    private HistoryEntryData[] itemsData;
+    private List<AccountEntryData> itemsData;
 
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -29,14 +34,15 @@ public class IconTitlDescListAdapter extends RecyclerView.Adapter<IconTitlDescLi
         }
     }
 
-    public IconTitlDescListAdapter(Context context, HistoryEntryData[] itemsData) {
+    public AccountEntryListAdapter(Context context, AccountEntryData[] itemsData) {
         this.context = context;
-        this.itemsData = itemsData;
+        this.itemsData = Arrays.asList(itemsData);
+        Collections.sort(this.itemsData);
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public IconTitlDescListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AccountEntryListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.icon_titl_desc_list_item, null);
 
@@ -51,15 +57,15 @@ public class IconTitlDescListAdapter extends RecyclerView.Adapter<IconTitlDescLi
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
-        viewHolder.txtFirstLine.setText(itemsData[position].getValue());
-        viewHolder.txtFirstLine.setTextColor(itemsData[position].getValueColor(context));
-        viewHolder.txtSecondLine.setText(itemsData[position].getDescription());
-        viewHolder.imgIcon.setImageDrawable(itemsData[position].getIconCategory(context));
+        viewHolder.txtFirstLine.setText(itemsData.get(position).getValueFormatted());
+        viewHolder.txtFirstLine.setTextColor(itemsData.get(position).getValueColor(context));
+        viewHolder.txtSecondLine.setText(itemsData.get(position).getDescription());
+        viewHolder.imgIcon.setImageDrawable(itemsData.get(position).getIconCategory(context));
     }
 
     // Return the size of your itemsData (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return itemsData.length;
+        return itemsData.size();
     }
 }

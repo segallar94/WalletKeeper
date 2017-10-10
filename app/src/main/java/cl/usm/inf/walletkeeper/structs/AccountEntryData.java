@@ -4,24 +4,32 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
+import java.util.Date;
+
 import cl.usm.inf.walletkeeper.R;
 
 /**
  * Created by rescar on 07-10-17.
  */
 
-public class HistoryEntryData {
+public class AccountEntryData implements Comparable<AccountEntryData>{
     private float val;
     private String desc;
     private int cat;
+    private Date date;
 
-    public HistoryEntryData(float value, String desc, int cat){
+    public AccountEntryData(float value, String desc, int cat, Date date){
         this.val = value;
         this.desc = desc;
         this.cat = cat;
+        this.date = date;
     }
 
-    public String getValue() {
+    public float getValue(){
+        return this.val;
+    }
+
+    public String getValueFormatted() {
         String rr;
 
         if(val == (long)val)
@@ -36,9 +44,9 @@ public class HistoryEntryData {
 
     public int getValueColor(Context context) {
         if( val <= 0)
-            return ContextCompat.getColor(context, R.color.colorExpense);
+            return ContextCompat.getColor(context, R.color.expenseColor);
         else
-            return ContextCompat.getColor(context, R.color.colorExpense);
+            return ContextCompat.getColor(context, R.color.incomeColor);
     }
 
     public String getDescription() { return desc; }
@@ -56,4 +64,12 @@ public class HistoryEntryData {
 
         return ContextCompat.getDrawable(context, res);
     }
+
+    // Compare by date
+    @Override
+    public int compareTo(AccountEntryData o) {
+        return this.date.compareTo(o.date);
+    }
+
+    public Date getDate() { return date; }
 }
