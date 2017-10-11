@@ -68,6 +68,15 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         return itemsData.size();
     }
 
+    public void addItem(AccountEntryData item){
+        itemsData.add(item);
+        Collections.sort(this.itemsData);
+    }
+
+    public List<AccountEntryData> getItemsList() {
+        return this.itemsData;
+    }
+
     @Override
     public String toString(){
         return new Gson().toJson(this.itemsData);

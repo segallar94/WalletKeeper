@@ -6,6 +6,9 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_history_record">HistoryRecordActivity</string>
+    <string name="add_btn">agregar</string>
+    <string name="desc_hint">Descripcion</string>
+    <string name="price_hint">Precio</string>
 
     <string-array name="categorias_id">
         <item>1</item>

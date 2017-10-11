@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity
 
     /// AQUI ESTA LAs WEAs DE LISTA que necesitamos
     private RecyclerView mRecordHistoryListRecycler;
-    private RecyclerView.Adapter mRecordHistoryListAdapter;
+    private AccountEntryListAdapter mRecordHistoryListAdapter;
     private RecyclerView.LayoutManager mRecordHistoryListRecyclerLayoutManager;
 
     @Override
@@ -137,9 +135,7 @@ public class MainActivity extends AppCompatActivity
                 String nombre = data.getStringExtra("nombre");
                 float precio = data.getFloatExtra("precio",0);
                 int categoria = data.getIntExtra("categoria",1);
-                new AccountEntryData(precio * -1,nombre,categoria,todaysDate);
-                Log.w("nombre",nombre);
-                Log.w("precio",String.valueOf(precio));
+                ((AccountEntryListAdapter) mRecordHistoryListAdapter).addItem(new AccountEntryData(precio * -1,nombre,categoria,todaysDate));
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -171,7 +167,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     protected void onStop(){

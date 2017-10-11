@@ -1,10 +1,8 @@
 package cl.usm.inf.walletkeeper;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import static cl.usm.inf.walletkeeper.R.array.categorias_id;
 import static cl.usm.inf.walletkeeper.R.array.categorias_nombre;
 
 /**
@@ -39,13 +36,13 @@ public class Pop extends Activity
         int height = dm.heightPixels;
         getWindow().setLayout((int)(width*.8),(int)(height*.8));
 
-        editText = (EditText) findViewById(R.id.editText);
-        editText2 = (EditText) findViewById(R.id.editText2);
+        editText = (EditText) findViewById(R.id.entryValue);
+        editText2 = (EditText) findViewById(R.id.entryDescription);
 
-        Button btn = (Button) findViewById(R.id.agregar);
+        Button btn = (Button) findViewById(R.id.entryAddBtn);
         btn.setOnClickListener(this);
 
-        spinner = (Spinner) findViewById(R.id.categorias);
+        spinner = (Spinner) findViewById(R.id.categorySelector);
         String item = spinner.getSelectedItem().toString();
         int spinner_pos = spinner.getSelectedItemPosition();
         String[] item_values = getResources().getStringArray(R.array.categorias_id);
