@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cl.usm.inf.walletkeeper.MainActivity"
+    tools:context="cl.usm.inf.walletkeeper.EntriesListingActivity"
     tools:layout_editor_absoluteX="8dp"
     tools:layout_editor_absoluteY="8dp"
     tools:showIn="@layout/app_bar_main"></android.support.v7.widget.RecyclerView>

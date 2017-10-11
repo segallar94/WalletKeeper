@@ -73,9 +73,6 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         Collections.sort(this.itemsData);
     }
 
-    public List<AccountEntryData> getItemsList() {
-        return this.itemsData;
-    }
 
     @Override
     public String toString(){

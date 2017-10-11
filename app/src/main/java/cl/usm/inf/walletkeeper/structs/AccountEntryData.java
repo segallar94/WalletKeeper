@@ -6,6 +6,8 @@ import android.support.v4.content.ContextCompat;
 
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -56,7 +58,10 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
             return ContextCompat.getColor(context, R.color.incomeColor);
     }
 
-    public String getDescription() { return desc; }
+    public String getDescription() {
+        DateFormat dateInstance = SimpleDateFormat.getDateInstance();
+        return desc + " - " + dateInstance.format(date);
+    }
 
     public Drawable getIconCategory(Context context){
         int res;

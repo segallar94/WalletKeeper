@@ -17,17 +17,17 @@ import static cl.usm.inf.walletkeeper.R.array.categorias_nombre;
  * Created by sebastian on 08-10-17.
  */
 
-public class Pop extends Activity
+public class AddEntryActivity extends Activity
         implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-    private EditText editText, editText2;
-    private Spinner spinner;
+    private EditText editValueBox, editDescBox;
+    private Spinner selectCatBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.popadd);
+        setContentView(R.layout.entry_addition);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -36,15 +36,15 @@ public class Pop extends Activity
         int height = dm.heightPixels;
         getWindow().setLayout((int)(width*.8),(int)(height*.8));
 
-        editText = (EditText) findViewById(R.id.entryValue);
-        editText2 = (EditText) findViewById(R.id.entryDescription);
+        editValueBox = (EditText) findViewById(R.id.entryValue);
+        editDescBox = (EditText) findViewById(R.id.entryDescription);
 
         Button btn = (Button) findViewById(R.id.entryAddBtn);
         btn.setOnClickListener(this);
 
-        spinner = (Spinner) findViewById(R.id.categorySelector);
-        String item = spinner.getSelectedItem().toString();
-        int spinner_pos = spinner.getSelectedItemPosition();
+        selectCatBox = (Spinner) findViewById(R.id.categorySelector);
+        String item = selectCatBox.getSelectedItem().toString();
+        int spinner_pos = selectCatBox.getSelectedItemPosition();
         String[] item_values = getResources().getStringArray(R.array.categorias_id);
 
         int categoria_id = Integer.valueOf(item_values[spinner_pos]);
@@ -54,8 +54,8 @@ public class Pop extends Activity
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        selectCatBox.setAdapter(adapter);
+        selectCatBox.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -71,10 +71,11 @@ public class Pop extends Activity
     @Override
     public void onClick(View view) {
         Intent i =  new Intent();
-        i.putExtra("nombre",editText.getText().toString());
-        i.putExtra("precio", Float.valueOf(editText2.getText().toString()));
-        i.putExtra("categoria",spinner.getSelectedItemPosition());
+        i.putExtra("nombre", editDescBox.getText().toString() );
+        i.putExtra("precio", Float.valueOf(editValueBox.getText().toString()));
+        i.putExtra("categoria",selectCatBox.getSelectedItemPosition());
         setResult(Activity.RESULT_OK,i);
+
         finish();
     }
 }
