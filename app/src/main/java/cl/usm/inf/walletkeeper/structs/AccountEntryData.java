@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import com.google.gson.Gson;
 
 import java.util.Date;
+import java.util.Locale;
 
 import cl.usm.inf.walletkeeper.R;
 
@@ -35,13 +36,17 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
         String rr;
 
         if(val == (long)val)
-            rr = String.format("$%d", Math.abs((long)val));
+            rr = String.format(Locale.US, "$%d", Math.abs((long)val));
         else
-            rr = String.format("$%s", Math.abs((long)val));
+            rr = String.format(Locale.US, "$%s", Math.abs((long)val));
 
         if(val < 0)
             rr = "-".concat(rr);
         return rr;
+    }
+
+    public String getTitleFormatted(){
+        return getValueFormatted();
     }
 
     public int getValueColor(Context context) {
@@ -58,7 +63,28 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
 
         switch (cat){
             case 0 :
-                res = R.mipmap.ic_launcher_round;
+                res = R.drawable.ic_nobg_flat_heart;
+                break;
+            case 1 :
+                res = R.drawable.ic_round_flat_brush;
+                break;
+            case 2 :
+                res = R.drawable.ic_round_flat_desing;
+                break;
+            case 3 :
+                res = R.drawable.ic_round_flat_diamond;
+                break;
+            case 4 :
+                res = R.drawable.ic_round_flat_film;
+                break;
+            case 5 :
+                res = R.drawable.ic_round_flat_food;
+                break;
+            case 6 :
+                res = R.drawable.ic_round_flat_github;
+                break;
+            case 7 :
+                res = R.drawable.ic_round_flat_zeppelin;
                 break;
             default:
                 res = R.mipmap.ic_launcher_round;
@@ -75,5 +101,6 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
 
     public Date getDate() { return date; }
 
-    public String getJson() { return new Gson().toJson(this); }
+    @Override
+    public String toString() { return new Gson().toJson(this); }
 }

@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Arrays;
+import com.google.gson.Gson;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -22,9 +23,9 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtSecondLine;
-        public TextView txtFirstLine;
-        public ImageView imgIcon;
+        TextView txtSecondLine;
+        TextView txtFirstLine;
+        ImageView imgIcon;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -34,9 +35,9 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         }
     }
 
-    public AccountEntryListAdapter(Context context, AccountEntryData[] itemsData) {
+    public AccountEntryListAdapter(Context context, List<AccountEntryData> itemsData) {
         this.context = context;
-        this.itemsData = Arrays.asList(itemsData);
+        this.itemsData = itemsData;
         Collections.sort(this.itemsData);
     }
 
@@ -47,9 +48,7 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.icon_titl_desc_list_item, null);
 
         // create ViewHolder
-
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -57,7 +56,7 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
-        viewHolder.txtFirstLine.setText(itemsData.get(position).getValueFormatted());
+        viewHolder.txtFirstLine.setText(itemsData.get(position).getTitleFormatted());
         viewHolder.txtFirstLine.setTextColor(itemsData.get(position).getValueColor(context));
         viewHolder.txtSecondLine.setText(itemsData.get(position).getDescription());
         viewHolder.imgIcon.setImageDrawable(itemsData.get(position).getIconCategory(context));
@@ -67,5 +66,10 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
     @Override
     public int getItemCount() {
         return itemsData.size();
+    }
+
+    @Override
+    public String toString(){
+        return new Gson().toJson(this.itemsData);
     }
 }

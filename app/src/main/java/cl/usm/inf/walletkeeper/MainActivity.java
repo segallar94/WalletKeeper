@@ -1,10 +1,10 @@
 package cl.usm.inf.walletkeeper;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,12 +12,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
 import cl.usm.inf.walletkeeper.structs.AccountEntryData;
@@ -60,24 +66,34 @@ public class MainActivity extends AppCompatActivity
         mRecordHistoryListRecycler.setLayoutManager(mRecordHistoryListRecyclerLayoutManager);
 
             //CON DATOS DE PRUEBA
-        Date todaysDate = new Date();
-        AccountEntryData[] myDataset = {
-                new AccountEntryData(-1000f,"kadjsnfsncan sfafasf", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-200f,"davison stoffelson", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-100000f,"me kgo sjfkodjn", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-100000f,"mi poto", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-14f,"HA HA", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-20f,"RELLENO", (int)(Math.random() * 10), todaysDate),
-                new AccountEntryData(-1000f,"claudio torres", (int)(Math.random() * 10), todaysDate)
-        };
+//        Date todaysDate = new Date();
+//        AccountEntryData[] myDataset = {
+        //        new AccountEntryData((float)(Math.random()*-100000),"Stefan Steffenson", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"Johan Straus", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"HA HA", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"barsinso", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"ricanmorti", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"RELLENO1", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"RELLENO2", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"RELLENO3", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"RELLENO4", (int)(Math.random()*10), todaysDate),
+        //       new AccountEntryData((float)(Math.random()*-100000),"RELLENO5", (int)(Math.random()*10), todaysDate),
+        //        new AccountEntryData((float)(Math.random()*-100000),"RELLENO6", (int)(Math.random()*10), todaysDate),
+//                new AccountEntryData((float)(Math.random()*-100000),"claudio torres", (int)(Math.random()*10), todaysDate)
+//        };
+
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        Type listType = new TypeToken<List<AccountEntryData>>(){}.getType();
+        List<AccountEntryData> data = new Gson().fromJson(sp.getString("AccountantEntriesList", "[]"), listType);
+
+//        if(data.isEmpty()){
+//            for(AccountEntryData el : myDataset){
+//                data.add(el);
+//            }
+//        }
 
         // specify an adapter
-        mRecordHistoryListAdapter = new AccountEntryListAdapter(this, myDataset);
+        mRecordHistoryListAdapter = new AccountEntryListAdapter(this, data);
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
     }
 
@@ -154,5 +170,25 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        saveData();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        saveData();
+    }
+
+    public void saveData(){
+        SharedPreferences.Editor spe = getPreferences(MODE_PRIVATE).edit();
+
+        spe.putString("AccountantEntriesList", ((AccountEntryListAdapter) mRecordHistoryListAdapter).toString());
+        spe.commit();
     }
 }
