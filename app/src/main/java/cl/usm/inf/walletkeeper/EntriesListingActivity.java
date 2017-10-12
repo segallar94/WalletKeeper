@@ -115,6 +115,11 @@ public class EntriesListingActivity extends AppCompatActivity
                 int categoria = data.getIntExtra("categoria",0);
                 mRecordHistoryListAdapter.addItem(new AccountEntryData(precio*isExpense, nombre , categoria, todaysDate));
                 saveData();
+                SharedPreferences.Editor new_budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE).edit();
+                SharedPreferences budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE);
+                new_budget.putString("budget",String.valueOf(Float.valueOf(budget.getString("budget","0")) - precio));
+                new_budget.apply();
+                new_budget.commit();
                 mRecordHistoryListAdapter.notifyDataSetChanged();
             }
             if (resultCode == RESULT_CANCELED) {
