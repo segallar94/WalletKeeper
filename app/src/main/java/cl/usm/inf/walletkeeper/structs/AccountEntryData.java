@@ -63,6 +63,10 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
         return desc + " - " + dateInstance.format(date);
     }
 
+    public int getCategory(){
+        return cat;
+    }
+
     public Drawable getIconCategory(Context context){
         int res;
 

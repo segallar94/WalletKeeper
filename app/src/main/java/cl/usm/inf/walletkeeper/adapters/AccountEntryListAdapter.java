@@ -78,6 +78,21 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         return (List<AccountEntryData> ) (new ArrayList<AccountEntryData>(itemsData));
     }
 
+    public List<AccountEntryData> getByCategory(int cat){
+        return getByCategory(cat, getListClone());
+    }
+
+    static public List<AccountEntryData> getByCategory(int cat, List<AccountEntryData> data){
+        // EL filtrado mas penca de la vida dado que PUTOJAVA no deja ocupar lambdas no se por que
+        List<AccountEntryData> ret = (new ArrayList<AccountEntryData>());
+        for (AccountEntryData item : data) {
+            if(item.getCategory() == cat){
+                ret.add(item);
+            }
+        }
+        return ret;
+    }
+
     @Override
     public String toString(){
         return new Gson().toJson(this.itemsData);
