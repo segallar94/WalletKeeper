@@ -9,15 +9,9 @@
     <string name="add_btn">agregar</string>
     <string name="desc_hint">Descripcion</string>
     <string name="price_hint">Precio</string>
+    <string name="cancel_btn">cancelar</string>
 
-    <string-array name="categorias_id">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
-    <string-array name="categorias_nombre">
+    <string-array name="categories_list">
         <item>Ocio</item>
         <item>Hogar</item>
         <item>Salud</item>

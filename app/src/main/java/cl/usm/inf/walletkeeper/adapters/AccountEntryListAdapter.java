@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -73,6 +74,9 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         Collections.sort(this.itemsData);
     }
 
+    public List<AccountEntryData> getListClone() {
+        return (List<AccountEntryData> ) (new ArrayList<AccountEntryData>(itemsData));
+    }
 
     @Override
     public String toString(){
