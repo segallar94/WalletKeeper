@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import static cl.usm.inf.walletkeeper.R.array.categories_list;
 
@@ -52,6 +53,8 @@ public class AddEntryActivity extends Activity{
             i.putExtra("categoria", selectCatBox.getSelectedItemPosition());
             setResult(Activity.RESULT_OK, i);
             finish();
+        }else{
+            Toast.makeText(this, R.string.no_empty_form_please,Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -5,11 +5,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="title_activity_history_record">HistoryRecordActivity</string>
     <string name="add_btn">agregar</string>
     <string name="desc_hint">Descripcion</string>
     <string name="price_hint">Precio</string>
     <string name="cancel_btn">cancelar</string>
+    <string name="no_empty_form_please">ingrese un valor</string>
 
     <string-array name="categories_list">
         <item>Ocio</item>
