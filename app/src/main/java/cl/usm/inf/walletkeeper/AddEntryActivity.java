@@ -5,20 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import static cl.usm.inf.walletkeeper.R.array.categorias_nombre;
+import static cl.usm.inf.walletkeeper.R.array.categories_list;
 
 /**
  * Created by sebastian on 08-10-17.
  */
 
-public class AddEntryActivity extends Activity
-        implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class AddEntryActivity extends Activity{
 
     private EditText editValueBox, editDescBox;
     private Spinner selectCatBox;
@@ -26,7 +24,6 @@ public class AddEntryActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.entry_addition);
 
         DisplayMetrics dm = new DisplayMetrics();
@@ -38,44 +35,35 @@ public class AddEntryActivity extends Activity
 
         editValueBox = (EditText) findViewById(R.id.entryValue);
         editDescBox = (EditText) findViewById(R.id.entryDescription);
-
-        Button btn = (Button) findViewById(R.id.entryAddBtn);
-        btn.setOnClickListener(this);
-
         selectCatBox = (Spinner) findViewById(R.id.categorySelector);
-        String item = selectCatBox.getSelectedItem().toString();
-        int spinner_pos = selectCatBox.getSelectedItemPosition();
-        String[] item_values = getResources().getStringArray(R.array.categorias_id);
 
-        int categoria_id = Integer.valueOf(item_values[spinner_pos]);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                categorias_nombre, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, categories_list, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         selectCatBox.setAdapter(adapter);
-        selectCatBox.setOnItemSelectedListener(this);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-
+    public void onAddClick(View view) {
+        if(!isEmpty(editDescBox) && !isEmpty(editValueBox)) {
+            Intent i = new Intent();
+            i.putExtra("nombre", editDescBox.getText().toString());
+            i.putExtra("precio", Float.valueOf(editValueBox.getText().toString()));
+            i.putExtra("categoria", selectCatBox.getSelectedItemPosition());
+            setResult(Activity.RESULT_OK, i);
+            finish();
+        }else{
+            Toast.makeText(this, R.string.no_empty_form_please,Toast.LENGTH_SHORT).show();
+        }
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent i =  new Intent();
-        i.putExtra("nombre", editDescBox.getText().toString() );
-        i.putExtra("precio", Float.valueOf(editValueBox.getText().toString()));
-        i.putExtra("categoria",selectCatBox.getSelectedItemPosition());
-        setResult(Activity.RESULT_OK,i);
-
+    public void onCancelClick(View view) {
         finish();
     }
+
+    private boolean isEmpty(EditText myeditText) {
+        return myeditText.getText().toString().trim().length() == 0;
+    }
+
 }

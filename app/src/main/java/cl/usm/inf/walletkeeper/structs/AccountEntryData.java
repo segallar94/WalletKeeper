@@ -63,24 +63,28 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
         return desc + " - " + dateInstance.format(date);
     }
 
+    public int getCategory(){
+        return cat;
+    }
+
     public Drawable getIconCategory(Context context){
         int res;
 
         switch (cat){
             case 0 :
-                res = R.drawable.ic_nobg_flat_heart;
+                res = R.drawable.ic_round_flat_film;
                 break;
             case 1 :
-                res = R.drawable.ic_round_flat_brush;
-                break;
-            case 2 :
-                res = R.drawable.ic_round_flat_desing;
-                break;
-            case 3 :
                 res = R.drawable.ic_round_flat_diamond;
                 break;
+            case 2 :
+                res = R.drawable.ic_nobg_flat_heart;
+                break;
+            case 3 :
+                res = R.drawable.ic_round_flat_zeppelin;
+                break;
             case 4 :
-                res = R.drawable.ic_round_flat_film;
+                res = R.drawable.ic_round_flat_desing;
                 break;
             case 5 :
                 res = R.drawable.ic_round_flat_food;
@@ -89,7 +93,7 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
                 res = R.drawable.ic_round_flat_github;
                 break;
             case 7 :
-                res = R.drawable.ic_round_flat_zeppelin;
+                res = R.drawable.ic_round_flat_brush;
                 break;
             default:
                 res = R.mipmap.ic_launcher_round;
