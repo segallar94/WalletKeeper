@@ -135,9 +135,13 @@ public class EntriesListingActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.budgetviewer) {
+            Intent intent = new Intent(EntriesListingActivity.this,BudgetDisplay.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_manage) { //aqui se define el presupuesto
+            Intent intent = new Intent(EntriesListingActivity.this,DefineBudgetActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
 

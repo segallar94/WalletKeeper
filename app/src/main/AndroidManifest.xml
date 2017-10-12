@@ -19,10 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name=".AddEntryActivity"
-            android:theme="@style/AppTheme.CustomTheme">
-        </activity>
+        <activity
+            android:name=".AddEntryActivity"
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity android:name=".DefineBudgetActivity" />
+        <activity android:name=".BudgetDisplay"></activity>
     </application>
 
 </manifest>
