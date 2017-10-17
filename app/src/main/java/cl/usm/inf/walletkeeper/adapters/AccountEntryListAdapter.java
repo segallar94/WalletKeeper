@@ -93,6 +93,15 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         return ret;
     }
 
+    static public float getTotalByCategory(int cat, List<AccountEntryData> data){
+        List<AccountEntryData> catList = getByCategory(cat,data);
+        float total = 0;
+        for(AccountEntryData item : catList) {
+            total = total + item.getValue();
+        }
+        return total;
+    }
+
     @Override
     public String toString(){
         return new Gson().toJson(this.itemsData);

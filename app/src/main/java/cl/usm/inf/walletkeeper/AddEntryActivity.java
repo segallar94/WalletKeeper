@@ -25,7 +25,7 @@ public class AddEntryActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry_addition);
-        
+
         editValueBox = (EditText) findViewById(R.id.entryValue);
         editDescBox = (EditText) findViewById(R.id.entryDescription);
         selectCatBox = (Spinner) findViewById(R.id.categorySelector);
