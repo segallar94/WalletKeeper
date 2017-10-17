@@ -25,14 +25,7 @@ public class AddEntryActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry_addition);
-
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        getWindow().setLayout((int)(width*.8),(int)(height*.8));
-
+        
         editValueBox = (EditText) findViewById(R.id.entryValue);
         editDescBox = (EditText) findViewById(R.id.entryDescription);
         selectCatBox = (Spinner) findViewById(R.id.categorySelector);
