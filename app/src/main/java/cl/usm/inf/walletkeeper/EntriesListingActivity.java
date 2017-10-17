@@ -47,7 +47,8 @@ public class EntriesListingActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(EntriesListingActivity.this,AddEntryActivity.class),1);
+                Intent form = new Intent(EntriesListingActivity.this, AddEntryActivity.class);
+                startActivityForResult(form, 1);
             }
         });
 

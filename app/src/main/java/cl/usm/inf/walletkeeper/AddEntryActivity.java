@@ -3,7 +3,7 @@ package cl.usm.inf.walletkeeper;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -16,7 +16,7 @@ import static cl.usm.inf.walletkeeper.R.array.categories_list;
  * Created by sebastian on 08-10-17.
  */
 
-public class AddEntryActivity extends Activity{
+public class AddEntryActivity extends AppCompatActivity {
 
     private EditText editValueBox, editDescBox;
     private Spinner selectCatBox;
@@ -24,14 +24,11 @@ public class AddEntryActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.entry_addition);
+        setContentView(R.layout.add_entry_activity);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.add_entry_title);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        getWindow().setLayout((int)(width*.8),(int)(height*.8));
 
         editValueBox = (EditText) findViewById(R.id.entryValue);
         editDescBox = (EditText) findViewById(R.id.entryDescription);
@@ -59,11 +56,17 @@ public class AddEntryActivity extends Activity{
     }
 
     public void onCancelClick(View view) {
-        finish();
+        onBackPressed();
     }
 
     private boolean isEmpty(EditText myeditText) {
         return myeditText.getText().toString().trim().length() == 0;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

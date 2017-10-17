@@ -19,4 +19,5 @@
         <item>Indispensable</item>
     </string-array>
     <string name="define_btn">Definir</string>
+    <string name="add_entry_title">Añadir Gasto</string>
 </resources>
