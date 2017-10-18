@@ -189,5 +189,6 @@ public class EntriesListingActivity extends AppCompatActivity
         //mRecordHistoryListAdapter = null;
         mRecordHistoryListAdapter = new AccountEntryListAdapter(this, data);
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
+        Log.w("gasto",String.valueOf(mRecordHistoryListAdapter.getTotalByCategory(1)));
     }
 }
