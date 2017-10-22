@@ -82,6 +82,10 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         return getByCategory(cat, getListClone());
     }
 
+    public float getTotalByCategory(int cat){
+        return getTotalByCategory(cat, getListClone());
+    }
+
     static public List<AccountEntryData> getByCategory(int cat, List<AccountEntryData> data){
         // EL filtrado mas penca de la vida dado que PUTOJAVA no deja ocupar lambdas no se por que
         List<AccountEntryData> ret = (new ArrayList<AccountEntryData>());
@@ -91,6 +95,15 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
             }
         }
         return ret;
+    }
+
+    static public float getTotalByCategory(int cat, List<AccountEntryData> data){
+        List<AccountEntryData> catList = getByCategory(cat,data);
+        float total = 0;
+        for(AccountEntryData item : catList) {
+            total = total + item.getSignedValue();
+        }
+        return total;
     }
 
     @Override

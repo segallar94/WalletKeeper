@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -191,5 +192,6 @@ public class EntriesListingActivity extends AppCompatActivity
         //mRecordHistoryListAdapter = null;
         mRecordHistoryListAdapter = new AccountEntryListAdapter(this, data);
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
+        Log.w("gasto",String.valueOf(mRecordHistoryListAdapter.getTotalByCategory(1)));
     }
 }
