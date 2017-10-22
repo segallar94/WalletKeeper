@@ -18,59 +18,62 @@ import cl.usm.inf.walletkeeper.R;
  */
 
 public class AccountEntryData implements Comparable<AccountEntryData>{
-    private float val;
-    private String desc;
-    private int cat;
+    private float signedValue;
+    private String name;
+    private int category;
     private Date date;
 
     public AccountEntryData(float value, String desc, int cat, Date date){
-        this.val = value;
-        this.desc = desc;
-        this.cat = cat;
+        this.signedValue = value;
+        this.name = desc;
+        this.category = cat;
         this.date = date;
     }
 
-    public float getValue(){
-        return this.val;
+    public Boolean isExpense() {
+        return signedValue <= 0;
     }
 
-    public String getValueFormatted() {
+    public float getSignedValue(){
+        return this.signedValue;
+    }
+
+    public String getName() { return name; }
+
+    public String getFormattedValue() {
         String rr;
 
-        if(val == (long)val)
-            rr = String.format(Locale.US, "$%d", Math.abs((long)val));
+        if(signedValue == (long)signedValue)
+            rr = String.format(Locale.US, "$%d", Math.abs((long)signedValue));
         else
-            rr = String.format(Locale.US, "$%s", Math.abs((long)val));
+            rr = String.format(Locale.US, "$%s", Math.abs((long)signedValue));
 
-        if(val < 0)
+        if(isExpense())
             rr = "-".concat(rr);
         return rr;
     }
 
-    public String getTitleFormatted(){
-        return getValueFormatted();
-    }
-
     public int getValueColor(Context context) {
-        if( val <= 0)
+        //TODO
+        if(isExpense())
             return ContextCompat.getColor(context, R.color.expenseColor);
         else
             return ContextCompat.getColor(context, R.color.incomeColor);
     }
 
-    public String getDescription() {
+    public String getDescriptionFormatted() {
         DateFormat dateInstance = SimpleDateFormat.getDateInstance();
-        return desc + " - " + dateInstance.format(date);
+        return name + " - " + dateInstance.format(date);
     }
 
     public int getCategory(){
-        return cat;
+        return category;
     }
 
     public Drawable getIconCategory(Context context){
         int res;
 
-        switch (cat){
+        switch (category){
             case 0 :
                 res = R.drawable.ic_round_flat_film;
                 break;
@@ -105,7 +108,12 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
     // Compare by date
     @Override
     public int compareTo(AccountEntryData o) {
-        return this.date.compareTo(o.date);
+        int comparison = this.date.compareTo(o.date);
+        if (comparison != 0){
+            return comparison;
+        }else{
+            return (this.name.compareTo(o.name));
+        }
     }
 
     public Date getDate() { return date; }

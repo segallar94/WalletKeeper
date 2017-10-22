@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import static cl.usm.inf.walletkeeper.R.array.categories_list;
 public class AddEntryActivity extends AppCompatActivity {
 
     private EditText editValueBox, editDescBox;
+    private CheckBox isIncome;
     private Spinner selectCatBox;
 
     @Override
@@ -30,6 +32,7 @@ public class AddEntryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         editValueBox = (EditText) findViewById(R.id.entryValue);
         editDescBox = (EditText) findViewById(R.id.entryDescription);
+        isIncome = (CheckBox) findViewById(R.id.entryIsIncome);
         selectCatBox = (Spinner) findViewById(R.id.categorySelector);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -45,6 +48,7 @@ public class AddEntryActivity extends AppCompatActivity {
             Intent i = new Intent();
             i.putExtra("nombre", editDescBox.getText().toString());
             i.putExtra("precio", Float.valueOf(editValueBox.getText().toString()));
+            i.putExtra("ingreso", isIncome.isChecked());
             i.putExtra("categoria", selectCatBox.getSelectedItemPosition());
             setResult(Activity.RESULT_OK, i);
             finish();

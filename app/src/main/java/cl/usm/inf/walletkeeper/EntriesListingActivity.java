@@ -2,6 +2,8 @@ package cl.usm.inf.walletkeeper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -12,20 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
+import cl.usm.inf.walletkeeper.db.DbHelper;
+import cl.usm.inf.walletkeeper.db.WalletContract;
 import cl.usm.inf.walletkeeper.structs.AccountEntryData;
 
 public class EntriesListingActivity extends AppCompatActivity
@@ -110,25 +109,30 @@ public class EntriesListingActivity extends AppCompatActivity
         Date todaysDate = new Date();
         if(requestCode == 1){
             if  (resultCode == RESULT_OK){
-                String nombre = data.getStringExtra("nombre");
-                float precio = data.getFloatExtra("precio",0);
-                int isExpense = -1;
-                int categoria = data.getIntExtra("categoria",0);
-                mRecordHistoryListAdapter.addItem(new AccountEntryData(precio*isExpense, nombre , categoria, todaysDate));
-                saveData();
+                String Name = data.getStringExtra("nombre");
+                float Price = data.getFloatExtra("precio",0);
+                int isExpense = (data.getBooleanExtra("ingreso",false)) ? 1:-1;
+                int Category = data.getIntExtra("categoria",0);
+
+                DbHelper.INSERT_ACCOUNT_ENTRY(this, new AccountEntryData(
+                        Price*isExpense,
+                        Name,
+                        Category,
+                        todaysDate
+                ));
+
                 SharedPreferences.Editor new_budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE).edit();
                 SharedPreferences budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE);
-                new_budget.putString("budget",String.valueOf(Float.valueOf(budget.getString("budget","0")) - precio));
+                new_budget.putString("budget",String.valueOf(Float.valueOf(budget.getString("budget","0")) - Price));
                 new_budget.apply();
                 new_budget.commit();
+
                 mRecordHistoryListAdapter.notifyDataSetChanged();
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
-
-        Log.i("WALLET KEEPER", String.format(Locale.US, "%d", mRecordHistoryListAdapter.getItemCount()));
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -160,30 +164,28 @@ public class EntriesListingActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    protected void onStop(){
-        super.onStop();
-        saveData();
-    }
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        saveData();
-    }
-
-    public void saveData(){
-        SharedPreferences.Editor spe = getPreferences(MODE_PRIVATE).edit();
-
-        spe.putString("AccountantEntriesList", mRecordHistoryListAdapter.toString());
-        spe.apply();
-        spe.commit();
-    }
-
     public void loadData(){
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
-        Type listType = new TypeToken<List<AccountEntryData>>(){}.getType();
-        List<AccountEntryData> data = new Gson().fromJson(sp.getString("AccountantEntriesList", "[]"), listType);
+        DbHelper database = new DbHelper(this);
+        SQLiteDatabase db = database.getReadableDatabase();
+        List<AccountEntryData> data = new ArrayList<AccountEntryData>();
+
+        Date todaysdate = new Date();
+
+        if(db != null) {
+            Cursor c = db.rawQuery("SELECT * FROM " + WalletContract.AccountEntries.TABLE_NAME, null);
+            if (c.moveToFirst()) {
+                do {
+                    data.add(new AccountEntryData(
+                            c.getFloat(c.getColumnIndexOrThrow(WalletContract.AccountEntries.COLUMN_NAME_PRICE)),
+                            c.getString(c.getColumnIndexOrThrow(WalletContract.AccountEntries.COLUMN_NAME_NAME)),
+                            c.getInt(c.getColumnIndexOrThrow(WalletContract.AccountEntries.COLUMN_NAME_CATEGORY)),
+                            todaysdate)
+                    );
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        }
 
         // specify an adapter
         //mRecordHistoryListAdapter = null;

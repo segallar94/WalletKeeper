@@ -70,6 +70,13 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="324dp" />
 
+        <CheckBox
+            android:id="@+id/entryIsIncome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/entryDescription"
+            android:text="@string/isIncome" />
+
     </RelativeLayout>
 
     <Button

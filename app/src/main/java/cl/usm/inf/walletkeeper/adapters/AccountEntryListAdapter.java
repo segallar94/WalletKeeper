@@ -57,9 +57,9 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
-        viewHolder.txtFirstLine.setText(itemsData.get(position).getTitleFormatted());
+        viewHolder.txtFirstLine.setText(itemsData.get(position).getFormattedValue());
         viewHolder.txtFirstLine.setTextColor(itemsData.get(position).getValueColor(context));
-        viewHolder.txtSecondLine.setText(itemsData.get(position).getDescription());
+        viewHolder.txtSecondLine.setText(itemsData.get(position).getDescriptionFormatted());
         viewHolder.imgIcon.setImageDrawable(itemsData.get(position).getIconCategory(context));
     }
 
