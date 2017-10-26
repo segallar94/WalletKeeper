@@ -34,7 +34,8 @@ public class DbHelper extends SQLiteOpenHelper {
                     AccountEntries._ID + INTEGER + PRIMARY_KEY + COMMA +
                     AccountEntries.COLUMN_NAME_NAME + TEXT + COMMA +
                     AccountEntries.COLUMN_NAME_PRICE + REAL + COMMA +
-                    AccountEntries.COLUMN_NAME_CATEGORY  + INTEGER + /*COMMA +
+                    AccountEntries.COLUMN_NAME_CATEGORY  + INTEGER + COMMA +
+                    AccountEntries.COLUMN_NAME_DATE  + INTEGER + /*COMMA +
                     "FOREIGN KEY("+ AccountEntries.COLUMN_NAME_CATEGORY +") REFERENCES "+ Categories.TABLE_NAME +"("+ Categories._ID +")" +*/
                     " )";
 
@@ -50,7 +51,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + AccountEntries.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Categories.TABLE_NAME);
+        onCreate(db);
     }
 
     public static long INSERT_ACCOUNT_ENTRY(Context context, AccountEntryData entry){
@@ -60,6 +63,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(WalletContract.AccountEntries.COLUMN_NAME_NAME, entry.getName());
         values.put(WalletContract.AccountEntries.COLUMN_NAME_PRICE, entry.getSignedValue());
         values.put(WalletContract.AccountEntries.COLUMN_NAME_CATEGORY, entry.getCategory());
+        values.put(WalletContract.AccountEntries.COLUMN_NAME_DATE, entry.getDate().getTime());
         long result = db.insert(WalletContract.AccountEntries.TABLE_NAME, null, values);
         db.close();
         return result;

@@ -7,9 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 import static cl.usm.inf.walletkeeper.R.array.categories_list;
 
@@ -18,10 +24,10 @@ import static cl.usm.inf.walletkeeper.R.array.categories_list;
  */
 
 public class AddEntryActivity extends AppCompatActivity {
-
     private EditText editValueBox, editDescBox;
     private CheckBox isIncome;
     private Spinner selectCatBox;
+    private DatePicker datePick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,13 @@ public class AddEntryActivity extends AppCompatActivity {
         editDescBox = (EditText) findViewById(R.id.entryDescription);
         isIncome = (CheckBox) findViewById(R.id.entryIsIncome);
         selectCatBox = (Spinner) findViewById(R.id.categorySelector);
+        datePick = (DatePicker) findViewById(R.id.entryDate);
+        datePick.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
+
+        Calendar selectedDate = Calendar.getInstance();
+        selectedDate.setTime(new Date());
+        datePick.updateDate(selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH), selectedDate.get(Calendar.DAY_OF_MONTH));
+
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, categories_list, android.R.layout.simple_spinner_item);
@@ -45,13 +58,16 @@ public class AddEntryActivity extends AppCompatActivity {
         selectCatBox.setAdapter(adapter);
     }
 
-    public void onAddClick(View view) {
+    public void onAddClick(View view) throws ParseException {
         if(!isEmpty(editDescBox) && !isEmpty(editValueBox)) {
             Intent i = new Intent();
             i.putExtra("nombre", editDescBox.getText().toString());
             i.putExtra("precio", Float.valueOf(editValueBox.getText().toString()));
             i.putExtra("ingreso", isIncome.isChecked());
             i.putExtra("categoria", selectCatBox.getSelectedItemPosition());
+            i.putExtra("fecha-year", datePick.getYear());
+            i.putExtra("fecha-month", datePick.getMonth());
+            i.putExtra("fecha-day", datePick.getDayOfMonth());
             setResult(Activity.RESULT_OK, i);
             finish();
         }else{
