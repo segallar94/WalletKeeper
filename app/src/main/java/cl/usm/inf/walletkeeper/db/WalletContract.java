@@ -12,6 +12,7 @@ public final class WalletContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_PRICE = "price";
         public static final String COLUMN_NAME_CATEGORY = "cat";
+        public static final String COLUMN_NAME_DATE = "date";
     }
 
     public static class Categories implements BaseColumns {

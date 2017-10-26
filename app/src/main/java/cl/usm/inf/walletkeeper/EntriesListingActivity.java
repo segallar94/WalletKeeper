@@ -20,12 +20,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
 import cl.usm.inf.walletkeeper.db.DbHelper;
-import cl.usm.inf.walletkeeper.db.WalletContract;
+import cl.usm.inf.walletkeeper.db.WalletContract.*;
 import cl.usm.inf.walletkeeper.structs.AccountEntryData;
 
 public class EntriesListingActivity extends AppCompatActivity
@@ -107,19 +108,21 @@ public class EntriesListingActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        Date todaysDate = new Date();
         if(requestCode == 1){
             if  (resultCode == RESULT_OK){
                 String Name = data.getStringExtra("nombre");
                 float Price = data.getFloatExtra("precio",0);
                 int isExpense = (data.getBooleanExtra("ingreso",false)) ? 1:-1;
+
+                Calendar date = Calendar.getInstance();
+                date.set(data.getIntExtra("fecha-year", 0), data.getIntExtra("fecha-month", 0), data.getIntExtra("fecha-day", 0));
                 int Category = data.getIntExtra("categoria",0);
 
                 DbHelper.INSERT_ACCOUNT_ENTRY(this, new AccountEntryData(
                         Price*isExpense,
                         Name,
                         Category,
-                        todaysDate
+                        date.getTime()
                 ));
 
                 SharedPreferences.Editor new_budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE).edit();
@@ -129,8 +132,7 @@ public class EntriesListingActivity extends AppCompatActivity
                 new_budget.commit();
 
                 mRecordHistoryListAdapter.notifyDataSetChanged();
-            }
-            if (resultCode == RESULT_CANCELED) {
+            }else if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
@@ -170,18 +172,16 @@ public class EntriesListingActivity extends AppCompatActivity
         SQLiteDatabase db = database.getReadableDatabase();
         List<AccountEntryData> data = new ArrayList<AccountEntryData>();
 
-        Date todaysdate = new Date();
-
         if(db != null) {
-            Cursor c = db.rawQuery("SELECT * FROM " + WalletContract.AccountEntries.TABLE_NAME, null);
+            Cursor c = db.rawQuery("SELECT * FROM " + AccountEntries.TABLE_NAME, null);
             if (c.moveToFirst()) {
                 do {
                     data.add(new AccountEntryData(
-                            c.getFloat(c.getColumnIndexOrThrow(WalletContract.AccountEntries.COLUMN_NAME_PRICE)),
-                            c.getString(c.getColumnIndexOrThrow(WalletContract.AccountEntries.COLUMN_NAME_NAME)),
-                            c.getInt(c.getColumnIndexOrThrow(WalletContract.AccountEntries.COLUMN_NAME_CATEGORY)),
-                            todaysdate)
-                    );
+                            c.getFloat(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_PRICE)),
+                            c.getString(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_NAME)),
+                            c.getInt(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_CATEGORY)),
+                            new Date(c.getInt((c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_DATE)))* 1000L)
+                    ));
                 } while (c.moveToNext());
             }
             c.close();
