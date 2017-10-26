@@ -1,5 +1,8 @@
 package cl.usm.inf.walletkeeper;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -27,6 +30,7 @@ import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
 import cl.usm.inf.walletkeeper.db.DbHelper;
 import cl.usm.inf.walletkeeper.db.WalletContract;
 import cl.usm.inf.walletkeeper.structs.AccountEntryData;
+import android.support.v4.app.NotificationCompat;
 
 public class EntriesListingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -124,7 +128,7 @@ public class EntriesListingActivity extends AppCompatActivity
 
                 SharedPreferences.Editor new_budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE).edit();
                 SharedPreferences budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE);
-                new_budget.putString("budget",String.valueOf(Float.valueOf(budget.getString("budget","0")) - Price));
+                new_budget.putString("budget",String.valueOf(Float.valueOf(budget.getString("budget","0")) + Price*isExpense));
                 new_budget.apply();
                 new_budget.commit();
 
@@ -192,6 +196,25 @@ public class EntriesListingActivity extends AppCompatActivity
         //mRecordHistoryListAdapter = null;
         mRecordHistoryListAdapter = new AccountEntryListAdapter(this, data);
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
-        Log.w("gasto",String.valueOf(mRecordHistoryListAdapter.getTotalByCategory(1)));
+        Log.w("gasto",String.valueOf(mRecordHistoryListAdapter.getTotalByCategory(0)));
+
+        // NOTIFICACION
+        SharedPreferences budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE);
+        float budget_val = Float.valueOf(budget.getString("budget","0"));
+        float ocio_total;
+
+        if (mRecordHistoryListAdapter == null)
+            ocio_total = 0;
+        else
+            ocio_total = mRecordHistoryListAdapter.getTotalByCategory(0) * -1;
+
+        Log.d("notif",String.valueOf(ocio_total/budget_val));
+        Log.d("ocio total",String.valueOf(ocio_total));
+        Log.d("budget_val",String.valueOf(budget_val));
+
+        if (ocio_total/budget_val >= 0.3) {
+            Intent intent = new Intent(this, NotificationService.class);
+            startService(intent);
+        }
     }
 }
