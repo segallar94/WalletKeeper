@@ -10,6 +10,7 @@
     <string name="price_hint">Precio</string>
     <string name="budget_hint">Presupuesto</string>
     <string name="cancel_btn">cancelar</string>
+    <string name="settings">Configuraciones</string>
     <string name="no_empty_form_please">ingrese un valor</string>
 
     <string-array name="categories_list">

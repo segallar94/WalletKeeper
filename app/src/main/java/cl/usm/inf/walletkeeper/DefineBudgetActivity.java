@@ -1,14 +1,13 @@
 package cl.usm.inf.walletkeeper;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class DefineBudgetActivity extends Activity
+public class DefineBudgetActivity extends AppCompatActivity
         implements View.OnClickListener {
 
     private EditText BudgetEntry;
@@ -16,8 +15,12 @@ public class DefineBudgetActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.define_budget);
 
+        setContentView(R.layout.define_budget);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.settings);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         Button btn = (Button) findViewById(R.id.defineBtn);
         btn.setOnClickListener(this);
 
@@ -32,5 +35,12 @@ public class DefineBudgetActivity extends Activity
         spe.commit();
 
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        // or call onBackPressed()
+        return true;
     }
 }

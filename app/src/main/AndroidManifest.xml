@@ -23,7 +23,9 @@
             android:name=".AddEntryActivity"
             android:theme="@style/AppTheme.CustomTheme" />
         <activity android:name=".DefineBudgetActivity" />
-        <activity android:name=".BudgetDisplay" />
+        <activity
+            android:name=".BudgetDisplay"
+            android:theme="@style/AppTheme.CustomTheme"/>
 
         <service
             android:name=".NotificationService"

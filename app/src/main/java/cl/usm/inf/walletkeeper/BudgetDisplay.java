@@ -1,16 +1,14 @@
 package cl.usm.inf.walletkeeper;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 
 import cl.usm.inf.walletkeeper.adapters.BudgetAdapter;
 
-public class BudgetDisplay extends Activity {
+public class BudgetDisplay extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -18,8 +16,13 @@ public class BudgetDisplay extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_budget_display);
-      //  mRecyclerView = (RecyclerView) findViewById(R.id.BudgetRecycler);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.budget_hint);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        //  mRecyclerView = (RecyclerView) findViewById(R.id.BudgetRecycler);
 
         SharedPreferences sp = getSharedPreferences("PREF_NAME",MODE_PRIVATE);
         String data = sp.getString("budget","0");
@@ -36,5 +39,12 @@ public class BudgetDisplay extends Activity {
   //      mRecyclerView.setAdapter(mAdapter);
         TextView budget = (TextView) findViewById(R.id.budgetInfo);
         budget.setText(data);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        // or call onBackPressed()
+        return true;
     }
 }
