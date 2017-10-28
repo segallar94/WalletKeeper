@@ -12,13 +12,6 @@
     <string name="cancel_btn">cancelar</string>
     <string name="settings">Configuraciones</string>
     <string name="no_empty_form_please">ingrese un valor</string>
-
-    <string-array name="categories_list">
-        <item>Ocio</item>
-        <item>Hogar</item>
-        <item>Salud</item>
-        <item>Indispensable</item>
-    </string-array>
     <string name="define_btn">Definir</string>
     <string name="add_entry_title">Añadir Gasto</string>
     <string name="isIncome">Ingreso</string>

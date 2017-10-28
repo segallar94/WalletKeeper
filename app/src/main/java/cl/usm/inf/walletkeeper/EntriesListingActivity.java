@@ -5,8 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -22,15 +20,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
 import cl.usm.inf.walletkeeper.db.DbHelper;
-import cl.usm.inf.walletkeeper.db.WalletContract.*;
 import cl.usm.inf.walletkeeper.structs.AccountEntryData;
+import cl.usm.inf.walletkeeper.structs.Category;
+
 import android.support.v4.app.NotificationCompat;
 
 public class EntriesListingActivity extends AppCompatActivity
@@ -120,7 +116,7 @@ public class EntriesListingActivity extends AppCompatActivity
 
                 Calendar date = Calendar.getInstance();
                 date.set(data.getIntExtra("fecha-year", 0), data.getIntExtra("fecha-month", 0), data.getIntExtra("fecha-day", 0));
-                int Category = data.getIntExtra("categoria",0);
+                Category Category = DbHelper.READ_CATEGORIES(this).get(data.getIntExtra("categoria",0));
 
                 DbHelper.INSERT_ACCOUNT_ENTRY(this, new AccountEntryData(
                         Price*isExpense,
@@ -172,29 +168,8 @@ public class EntriesListingActivity extends AppCompatActivity
     }
 
     public void loadData(){
-        DbHelper database = new DbHelper(this);
-        SQLiteDatabase db = database.getReadableDatabase();
-        List<AccountEntryData> data = new ArrayList<AccountEntryData>();
-
-        if(db != null) {
-            Cursor c = db.rawQuery("SELECT * FROM " + AccountEntries.TABLE_NAME, null);
-            if (c.moveToFirst()) {
-                do {
-                    data.add(new AccountEntryData(
-                            c.getFloat(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_PRICE)),
-                            c.getString(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_NAME)),
-                            c.getInt(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_CATEGORY)),
-                            new Date(c.getInt((c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_DATE)))* 1000L)
-                    ));
-                } while (c.moveToNext());
-            }
-            c.close();
-            db.close();
-        }
-
-        // specify an adapter
         //mRecordHistoryListAdapter = null;
-        mRecordHistoryListAdapter = new AccountEntryListAdapter(this, data);
+        mRecordHistoryListAdapter = new AccountEntryListAdapter(this, DbHelper.READ_ENTRIES(this));
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
         Log.w("gasto",String.valueOf(mRecordHistoryListAdapter.getTotalByCategory(0)));
 

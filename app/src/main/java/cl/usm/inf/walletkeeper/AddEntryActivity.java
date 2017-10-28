@@ -14,10 +14,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-import static cl.usm.inf.walletkeeper.R.array.categories_list;
+import cl.usm.inf.walletkeeper.db.DbHelper;
+import cl.usm.inf.walletkeeper.structs.Category;
 
 /**
  * Created by sebastian on 08-10-17.
@@ -51,11 +54,16 @@ public class AddEntryActivity extends AppCompatActivity {
 
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, categories_list, android.R.layout.simple_spinner_item);
+        List<String> allcategories = new ArrayList<>();
+        for (Category cat : DbHelper.READ_CATEGORIES(this)){
+            allcategories.add(cat.getName());
+        }
+
+        ArrayAdapter<CharSequence> categoriesNames = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, allcategories);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categoriesNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        selectCatBox.setAdapter(adapter);
+        selectCatBox.setAdapter(categoriesNames);
     }
 
     public void onAddClick(View view) throws ParseException {

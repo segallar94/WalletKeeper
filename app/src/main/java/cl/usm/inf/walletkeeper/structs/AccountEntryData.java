@@ -20,10 +20,10 @@ import cl.usm.inf.walletkeeper.R;
 public class AccountEntryData implements Comparable<AccountEntryData>{
     private float signedValue;
     private String name;
-    private int category;
+    private Category category;
     private Date date;
 
-    public AccountEntryData(float value, String desc, int cat, Date date){
+    public AccountEntryData(float value, String desc, Category cat, Date date){
         this.signedValue = value;
         this.name = desc;
         this.category = cat;
@@ -66,14 +66,14 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
         return name + " - " + dateInstance.format(date);
     }
 
-    public int getCategory(){
+    public Category getCategory(){
         return category;
     }
 
     public Drawable getIconCategory(Context context){
         int res;
 
-        switch (category){
+        switch (category.getResId()){
             case 0 :
                 res = R.drawable.ic_round_flat_film;
                 break;
@@ -120,4 +120,19 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
 
     @Override
     public String toString() { return new Gson().toJson(this); }
+
+    @Override
+    public int hashCode() {
+        return (int)(signedValue*date.getTime());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;   //If objects equal, is OK
+        if (o instanceof AccountEntryData) {
+            AccountEntryData that = (AccountEntryData) o;
+            return (name == that.name && signedValue == that.signedValue && category == that.category && date.equals(that.date));
+        }
+        return false;
+    }
 }
