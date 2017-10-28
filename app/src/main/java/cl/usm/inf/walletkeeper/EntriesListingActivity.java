@@ -36,6 +36,9 @@ import android.support.v4.app.NotificationCompat;
 public class EntriesListingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    // PARA LAS NOTIFICACIONES
+    private NotificationUtils mNotificationUtils;
+
     /// AQUI ESTA LAs WEAs DE LISTA que necesitamos
     private RecyclerView mRecordHistoryListRecycler;
     private AccountEntryListAdapter mRecordHistoryListAdapter;
@@ -199,22 +202,19 @@ public class EntriesListingActivity extends AppCompatActivity
         Log.w("gasto",String.valueOf(mRecordHistoryListAdapter.getTotalByCategory(0)));
 
         // NOTIFICACION
+
+        mNotificationUtils = new NotificationUtils(this);
+
         SharedPreferences budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE);
         float budget_val = Float.valueOf(budget.getString("budget","0"));
-        float ocio_total;
+        float ocio_total = mRecordHistoryListAdapter.getTotalByCategory(0) * -1;
 
-        if (mRecordHistoryListAdapter == null)
-            ocio_total = 0;
-        else
-            ocio_total = mRecordHistoryListAdapter.getTotalByCategory(0) * -1;
-
-        Log.d("notif",String.valueOf(ocio_total/budget_val));
-        Log.d("ocio total",String.valueOf(ocio_total));
-        Log.d("budget_val",String.valueOf(budget_val));
-
-        if (ocio_total/budget_val >= 0.3) {
-            Intent intent = new Intent(this, NotificationService.class);
-            startService(intent);
+        if(ocio_total/budget_val >= 0.3){
+            Notification.Builder nb = mNotificationUtils.
+                    getAndroidChannelNotification("Alerta de gastos",
+                            "Estás gastando mucho en Ocio, específicamente" +
+                    ocio_total);
+            mNotificationUtils.getManager().notify(101, nb.build());
         }
     }
 }

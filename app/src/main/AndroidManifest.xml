@@ -27,11 +27,6 @@
             android:name=".BudgetDisplay"
             android:theme="@style/AppTheme.CustomTheme"/>
 
-        <service
-            android:name=".NotificationService"
-            android:enabled="true"
-            android:exported="true" />
-
     </application>
 
 </manifest>
