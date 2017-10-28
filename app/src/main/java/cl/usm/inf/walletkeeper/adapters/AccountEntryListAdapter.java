@@ -90,7 +90,7 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         // EL filtrado mas penca de la vida dado que PUTOJAVA no deja ocupar lambdas no se por que
         List<AccountEntryData> ret = (new ArrayList<AccountEntryData>());
         for (AccountEntryData item : data) {
-            if(item.getCategory() == cat){
+            if(item.getCategory().getId() == cat){
                 ret.add(item);
             }
         }
