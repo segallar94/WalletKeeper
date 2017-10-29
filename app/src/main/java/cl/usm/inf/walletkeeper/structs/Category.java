@@ -29,7 +29,7 @@ public class Category implements Comparable<Category>{
 
     @Override
     public int hashCode() {
-        return resId;
+        return resId*id;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Category implements Comparable<Category>{
         if (o == this) return true;   //If objects equal, is OK
         if (o instanceof Category) {
             Category that = (Category) o;
-            return (name == that.name);
+            return (name.equals(that.name));
         }
         return false;
     }

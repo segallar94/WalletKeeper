@@ -1,7 +1,6 @@
 package cl.usm.inf.walletkeeper.structs;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
 import com.google.gson.Gson;
@@ -54,7 +53,6 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
     }
 
     public int getValueColor(Context context) {
-        //TODO
         if(isExpense())
             return ContextCompat.getColor(context, R.color.expenseColor);
         else
@@ -70,40 +68,7 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
         return category;
     }
 
-    public Drawable getIconCategory(Context context){
-        int res;
-
-        switch (category.getResId()){
-            case 0 :
-                res = R.drawable.ic_round_flat_film;
-                break;
-            case 1 :
-                res = R.drawable.ic_round_flat_diamond;
-                break;
-            case 2 :
-                res = R.drawable.ic_nobg_flat_heart;
-                break;
-            case 3 :
-                res = R.drawable.ic_round_flat_zeppelin;
-                break;
-            case 4 :
-                res = R.drawable.ic_round_flat_desing;
-                break;
-            case 5 :
-                res = R.drawable.ic_round_flat_food;
-                break;
-            case 6 :
-                res = R.drawable.ic_round_flat_github;
-                break;
-            case 7 :
-                res = R.drawable.ic_round_flat_brush;
-                break;
-            default:
-                res = R.mipmap.ic_launcher_round;
-        }
-
-        return ContextCompat.getDrawable(context, res);
-    }
+    public Date getDate() { return date; }
 
     // Compare by date
     @Override
@@ -115,8 +80,6 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
             return (this.name.compareTo(o.name));
         }
     }
-
-    public Date getDate() { return date; }
 
     @Override
     public String toString() { return new Gson().toJson(this); }
