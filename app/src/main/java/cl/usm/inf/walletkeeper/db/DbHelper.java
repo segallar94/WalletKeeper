@@ -22,29 +22,33 @@ import cl.usm.inf.walletkeeper.structs.Category;
  */
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String COMMA = " , ";
     private static final String INTEGER = " INTEGER ";
-    private static final String PRIMARY_KEY = " PRIMARY_KEY KEY ";
+    private static final String PRIMARY_KEY = " PRIMARY KEY ";
     private static final String TEXT = " TEXT ";
     private static final String UNIQUE = " UNIQUE ";
     private static final String REAL = " REAL ";
+    private static final String AUTOINCREMENT = " AUTOINCREMENT ";
+    private static final String WHERE = " WHERE ";
+    private static final String EQUALS = "=";
+    private static final String INNER_JOIN = " INNER JOIN ";
+    private static final String ON = " ON ";
 
     private static final String SQL_CREATE_CATEGORIES =
             "CREATE TABLE " + Categories.TABLE_NAME + " (" +
-                    Categories._ID + INTEGER + PRIMARY_KEY + COMMA +
-                    Categories.COLUMN_NAME_NAME + TEXT + UNIQUE + COMMA +
-                    Categories.COLUMN_NAME_RESOURCEID + INTEGER +
+                    Categories._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
+                    Categories.NAME + TEXT + UNIQUE + COMMA +
+                    Categories.RESOURCEID + INTEGER +
                     " )";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + AccountEntries.TABLE_NAME + " (" +
-                    AccountEntries._ID + INTEGER + PRIMARY_KEY + COMMA +
-                    AccountEntries.COLUMN_NAME_NAME + TEXT + COMMA +
-                    AccountEntries.COLUMN_NAME_PRICE + REAL + COMMA +
-                    AccountEntries.COLUMN_NAME_CATEGORY  + INTEGER + COMMA +
-                    AccountEntries.COLUMN_NAME_DATE  + INTEGER + /*COMMA +
-                    "FOREIGN KEY("+ AccountEntries.COLUMN_NAME_CATEGORY +") REFERENCES "+ Categories.TABLE_NAME +"("+ Categories._ID +")" +*/
+                    AccountEntries._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
+                    AccountEntries.NAME + TEXT + COMMA +
+                    AccountEntries.PRICE + REAL + COMMA +
+                    AccountEntries.CATEGORY_ID + INTEGER + COMMA +
+                    AccountEntries.DATE + INTEGER +
                     " )";
 
     public DbHelper(Context context){
@@ -58,23 +62,23 @@ public class DbHelper extends SQLiteOpenHelper {
 
         // Insert OCIO
             ContentValues values = new ContentValues();
-            values.put(Categories.COLUMN_NAME_NAME, "Ocio");
-            values.put(Categories.COLUMN_NAME_RESOURCEID, R.drawable.ic_round_flat_film);
+            values.put(Categories.NAME, "Ocio");
+            values.put(Categories.RESOURCEID, R.drawable.ic_round_flat_film);
             db.insert(Categories.TABLE_NAME, null, values);
         // Insert Hogar
             values = new ContentValues();
-            values.put(Categories.COLUMN_NAME_NAME, "Hogar");
-            values.put(Categories.COLUMN_NAME_RESOURCEID, R.drawable.ic_round_flat_diamond);
+            values.put(Categories.NAME, "Hogar");
+            values.put(Categories.RESOURCEID, R.drawable.ic_round_flat_diamond);
             db.insert(Categories.TABLE_NAME, null, values);
         // Insert SALUD
             values = new ContentValues();
-            values.put(Categories.COLUMN_NAME_NAME, "Salud");
-            values.put(Categories.COLUMN_NAME_RESOURCEID, R.drawable.ic_nobg_flat_heart);
+            values.put(Categories.NAME, "Salud");
+            values.put(Categories.RESOURCEID, R.drawable.ic_nobg_flat_heart);
             db.insert(Categories.TABLE_NAME, null, values);
         // Insert Indispensable
             values = new ContentValues();
-            values.put(Categories.COLUMN_NAME_NAME, "Indispensable");
-            values.put(Categories.COLUMN_NAME_RESOURCEID, R.drawable.ic_round_flat_zeppelin);
+            values.put(Categories.NAME, "Indispensable");
+            values.put(Categories.RESOURCEID, R.drawable.ic_round_flat_zeppelin);
             db.insert(Categories.TABLE_NAME, null, values);
 
     }
@@ -86,105 +90,79 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public static long INSERT_ACCOUNT_ENTRY(Context context, AccountEntryData entry){
-        DbHelper database = new DbHelper(context);
-        SQLiteDatabase db = database.getWritableDatabase();
+    public static long INSERT_ACCOUNT_ENTRY(SQLiteDatabase db, AccountEntryData entry){
         ContentValues values = new ContentValues();
-        values.put(WalletContract.AccountEntries.COLUMN_NAME_NAME, entry.getName());
-        values.put(WalletContract.AccountEntries.COLUMN_NAME_PRICE, entry.getSignedValue());
-        values.put(WalletContract.AccountEntries.COLUMN_NAME_CATEGORY, entry.getCategory().getId());
-        values.put(WalletContract.AccountEntries.COLUMN_NAME_DATE, entry.getDate().getTime());
-        long result = db.insert(WalletContract.AccountEntries.TABLE_NAME, null, values);
-        db.close();
-        return result;
+        values.put(WalletContract.AccountEntries.NAME, entry.getName());
+        values.put(WalletContract.AccountEntries.PRICE, entry.getSignedValue());
+        values.put(WalletContract.AccountEntries.CATEGORY_ID, entry.getCategory().getId());
+        values.put(WalletContract.AccountEntries.DATE, entry.getDate().getTime());
+        return db.insert(WalletContract.AccountEntries.TABLE_NAME, null, values);
     }
 
-    public static long INSERT_CATEGORY(Context context, Category cat){
-        DbHelper database = new DbHelper(context);
-        SQLiteDatabase db = database.getWritableDatabase();
+    public static long INSERT_CATEGORY(SQLiteDatabase db, String name, int resid){
         ContentValues values = new ContentValues();
-        values.put(Categories.COLUMN_NAME_NAME, cat.getName());
-        values.put(Categories.COLUMN_NAME_RESOURCEID, cat.getResId());
-        long result = db.insert(WalletContract.Categories.TABLE_NAME, null, values);
-        db.close();
-        return result;
+        values.put(Categories.NAME, name);
+        values.put(Categories.RESOURCEID, resid);
+        return db.insert(Categories.TABLE_NAME, null, values);
     }
 
-    public static List<AccountEntryData> READ_ENTRIES(Context context) {
-        List<Category> cats = READ_CATEGORIES(context);
-
-        DbHelper database = new DbHelper(context);
-        SQLiteDatabase db = database.getReadableDatabase();
+    public static List<AccountEntryData> GET_ENTRY(SQLiteDatabase db) {
         List<AccountEntryData> data = new ArrayList<AccountEntryData>();
 
-        if (db != null) {
-            Cursor c = db.rawQuery("SELECT * FROM " + AccountEntries.TABLE_NAME, null);
-            if (c.moveToFirst()) {
-                do {
-                    data.add(new AccountEntryData(
-                            c.getFloat(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_PRICE)),
-                            c.getString(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_NAME)),
-                            cats.get(c.getInt(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_CATEGORY))),
-                            new Date(c.getInt((c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_DATE))) * 1000L)
-                    ));
-                } while (c.moveToNext());
-            }
-            c.close();
-            db.close();
+        Cursor c = db.rawQuery("SELECT * FROM " + AccountEntries.TABLE_NAME + INNER_JOIN + Categories.TABLE_NAME + ON + AccountEntries.CATEGORY_ID + EQUALS + Categories._ID, null);
+        if (c.moveToFirst()) {
+            do {
+                data.add(new AccountEntryData(
+                        c.getFloat(c.getColumnIndexOrThrow(AccountEntries.PRICE)),
+                        c.getString(c.getColumnIndexOrThrow(AccountEntries.NAME)),
+                        new Category(c.getInt(c.getColumnIndexOrThrow(Categories._ID)),
+                                     c.getString(c.getColumnIndexOrThrow(Categories.NAME)),
+                                     c.getInt(c.getColumnIndexOrThrow(Categories.RESOURCEID))
+                                ),
+                        new Date(c.getInt((c.getColumnIndexOrThrow(AccountEntries.DATE))) * 1000L)
+                ));
+            } while (c.moveToNext());
         }
+        c.close();
 
         Collections.sort(data);
         return data;
     }
 
-    public static List<AccountEntryData> READ_ENTRIES_BY_CATEGORY(Context context, int catid) {
-        List<Category> cats = READ_CATEGORIES(context);
-
-        DbHelper database = new DbHelper(context);
-        SQLiteDatabase db = database.getReadableDatabase();
-        List<AccountEntryData> data = new ArrayList<AccountEntryData>();
-
-        if (db != null) {
-            Cursor c = db.rawQuery("SELECT * FROM " + AccountEntries.TABLE_NAME + " WHERE " + AccountEntries.COLUMN_NAME_CATEGORY + "=" + catid, null);
-            if (c.moveToFirst()) {
-                do {
-                    data.add(new AccountEntryData(
-                            c.getFloat(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_PRICE)),
-                            c.getString(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_NAME)),
-                            cats.get(c.getInt(c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_CATEGORY))),
-                            new Date(c.getInt((c.getColumnIndexOrThrow(AccountEntries.COLUMN_NAME_DATE))) * 1000L)
-                    ));
-                } while (c.moveToNext());
-            }
-            c.close();
-            db.close();
-        }
-
-        Collections.sort(data);
-        return data;
-    }
-
-    public static List<Category> READ_CATEGORIES(Context context) {
-        DbHelper database = new DbHelper(context);
-        SQLiteDatabase db = database.getReadableDatabase();
+    public static List<Category> GET_CATEGORY(SQLiteDatabase db) {
         List<Category> data = new ArrayList<Category>();
 
-        if (db != null) {
-            Cursor c = db.rawQuery("SELECT * FROM " + Categories.TABLE_NAME, null);
-            if (c.moveToFirst()) {
-                do {
-                    data.add(new Category(
-                            c.getInt(c.getColumnIndexOrThrow(Categories._ID)),
-                            c.getString(c.getColumnIndexOrThrow(Categories.COLUMN_NAME_NAME)),
-                            c.getInt(c.getColumnIndexOrThrow(Categories.COLUMN_NAME_RESOURCEID))
-                    ));
-                } while (c.moveToNext());
-            }
-            c.close();
-            db.close();
+        Cursor c = db.rawQuery("SELECT * FROM " + Categories.TABLE_NAME, null);
+        if (c.moveToFirst()) {
+            do {
+                data.add(new Category(
+                        c.getInt(c.getColumnIndexOrThrow(Categories._ID)),
+                        c.getString(c.getColumnIndexOrThrow(Categories.NAME)),
+                        c.getInt(c.getColumnIndexOrThrow(Categories.RESOURCEID))
+                ));
+            } while (c.moveToNext());
         }
+        c.close();
 
         Collections.sort(data);
         return data;
+    }
+
+    public static Category GET_CATEGORY(SQLiteDatabase db, int ID) {
+        if(ID == 0){
+            return new Category(0,"Categoria", R.mipmap.ic_launcher_round);
+        }else{
+            Category data = null;
+            Cursor c = db.rawQuery("SELECT * FROM " + Categories.TABLE_NAME + WHERE + Categories._ID + EQUALS + ID, null);
+            if (c.moveToFirst()) {
+                data = new Category(
+                        c.getInt(c.getColumnIndexOrThrow(Categories._ID)),
+                        c.getString(c.getColumnIndexOrThrow(Categories.NAME)),
+                        c.getInt(c.getColumnIndexOrThrow(Categories.RESOURCEID))
+                );
+            }
+            c.close();
+            return data;
+        }
     }
 }

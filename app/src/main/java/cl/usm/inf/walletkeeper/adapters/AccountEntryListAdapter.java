@@ -1,6 +1,7 @@
 package cl.usm.inf.walletkeeper.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,12 +56,12 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        // - get data from your itemsData at this position
-        // - replace the contents of the view with that itemsData
-        viewHolder.txtFirstLine.setText(itemsData.get(position).getFormattedValue());
-        viewHolder.txtFirstLine.setTextColor(itemsData.get(position).getValueColor(context));
-        viewHolder.txtSecondLine.setText(itemsData.get(position).getDescriptionFormatted());
-        viewHolder.imgIcon.setImageDrawable(itemsData.get(position).getIconCategory(context));
+        AccountEntryData item = itemsData.get(position);
+
+        viewHolder.txtFirstLine.setText(item.getFormattedValue());
+        viewHolder.txtFirstLine.setTextColor(item.getValueColor(context));
+        viewHolder.txtSecondLine.setText(item.getDescriptionFormatted());
+        viewHolder.imgIcon.setImageDrawable(ContextCompat.getDrawable(context, item.getCategory().getResId()));
     }
 
     // Return the size of your itemsData (invoked by the layout manager)

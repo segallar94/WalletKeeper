@@ -1,10 +1,9 @@
 package cl.usm.inf.walletkeeper;
 
 import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -26,8 +25,6 @@ import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
 import cl.usm.inf.walletkeeper.db.DbHelper;
 import cl.usm.inf.walletkeeper.structs.AccountEntryData;
 import cl.usm.inf.walletkeeper.structs.Category;
-
-import android.support.v4.app.NotificationCompat;
 
 public class EntriesListingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -113,18 +110,21 @@ public class EntriesListingActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == 1){
             if  (resultCode == RESULT_OK){
-                String Name = data.getStringExtra("nombre");
-                float Price = data.getFloatExtra("precio",0);
-                int isExpense = (data.getBooleanExtra("ingreso",false)) ? 1:-1;
+                SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
+
+                String Name = data.getStringExtra("nombre-string");
+                float Price = data.getFloatExtra("precio-float",0);
+                int isExpense = (data.getBooleanExtra("ingreso-bool",false)) ? 1:-1;
 
                 Calendar date = Calendar.getInstance();
                 date.set(data.getIntExtra("fecha-year", 0), data.getIntExtra("fecha-month", 0), data.getIntExtra("fecha-day", 0));
-                Category Category = DbHelper.READ_CATEGORIES(this).get(data.getIntExtra("categoria",0));
 
-                DbHelper.INSERT_ACCOUNT_ENTRY(this, new AccountEntryData(
+                Category Cat = DbHelper.GET_CATEGORY(db, data.getIntExtra("categoria-id",1));
+
+                DbHelper.INSERT_ACCOUNT_ENTRY(db, new AccountEntryData(
                         Price*isExpense,
                         Name,
-                        Category,
+                        Cat,
                         date.getTime()
                 ));
 
@@ -135,6 +135,7 @@ public class EntriesListingActivity extends AppCompatActivity
                 new_budget.commit();
 
                 mRecordHistoryListAdapter.notifyDataSetChanged();
+                db.close();
             }else if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
             }
@@ -171,9 +172,12 @@ public class EntriesListingActivity extends AppCompatActivity
     }
 
     public void loadData(){
+        SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
         //mRecordHistoryListAdapter = null;
-        mRecordHistoryListAdapter = new AccountEntryListAdapter(this, DbHelper.READ_ENTRIES(this));
+        mRecordHistoryListAdapter = new AccountEntryListAdapter(this, DbHelper.GET_ENTRY(db));
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
+        db.close();
+        Log.w("gasto",String.valueOf(mRecordHistoryListAdapter.getTotalByCategory(0)));
 
         // NOTIFICACIONES
 

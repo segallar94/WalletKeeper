@@ -2,6 +2,7 @@ package cl.usm.inf.walletkeeper;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -54,12 +55,14 @@ public class AddEntryActivity extends AppCompatActivity {
 
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        List<String> allcategories = new ArrayList<>();
-        for (Category cat : DbHelper.READ_CATEGORIES(this)){
-            allcategories.add(cat.getName());
+        List<String> allCategories = new ArrayList<>();
+        SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
+        for (Category cat : DbHelper.GET_CATEGORY(db)){
+            allCategories.add(cat.getName());
         }
+        db.close();
 
-        ArrayAdapter<CharSequence> categoriesNames = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, allcategories);
+        ArrayAdapter<CharSequence> categoriesNames = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, allCategories);
         // Specify the layout to use when the list of choices appears
         categoriesNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -69,10 +72,10 @@ public class AddEntryActivity extends AppCompatActivity {
     public void onAddClick(View view) throws ParseException {
         if(!isEmpty(editDescBox) && !isEmpty(editValueBox)) {
             Intent i = new Intent();
-            i.putExtra("nombre", editDescBox.getText().toString());
-            i.putExtra("precio", Float.valueOf(editValueBox.getText().toString()));
-            i.putExtra("ingreso", isIncome.isChecked());
-            i.putExtra("categoria", selectCatBox.getSelectedItemPosition());
+            i.putExtra("nombre-string", editDescBox.getText().toString());
+            i.putExtra("precio-float", Float.valueOf(editValueBox.getText().toString()));
+            i.putExtra("ingreso-bool", isIncome.isChecked());
+            i.putExtra("categoria-id", 1+ selectCatBox.getSelectedItemPosition());
             i.putExtra("fecha-year", datePick.getYear());
             i.putExtra("fecha-month", datePick.getMonth());
             i.putExtra("fecha-day", datePick.getDayOfMonth());
