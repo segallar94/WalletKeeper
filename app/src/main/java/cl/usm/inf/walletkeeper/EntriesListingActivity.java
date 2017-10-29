@@ -174,22 +174,48 @@ public class EntriesListingActivity extends AppCompatActivity
         //mRecordHistoryListAdapter = null;
         mRecordHistoryListAdapter = new AccountEntryListAdapter(this, DbHelper.READ_ENTRIES(this));
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);
-        Log.w("gasto",String.valueOf(mRecordHistoryListAdapter.getTotalByCategory(0)));
 
-        // NOTIFICACION
+        // NOTIFICACIONES
 
         mNotificationUtils = new NotificationUtils(this);
 
         SharedPreferences budget = getSharedPreferences("PREF_NAME",MODE_PRIVATE);
         float budget_val = Float.valueOf(budget.getString("budget","0"));
         float ocio_total = mRecordHistoryListAdapter.getTotalByCategory(0) * -1;
+        float hogar_total = mRecordHistoryListAdapter.getTotalByCategory(1) * -1;
+        float salud_total = mRecordHistoryListAdapter.getTotalByCategory(2) * -1;
+        float indispensable_total = mRecordHistoryListAdapter.getTotalByCategory(3) * -1;
 
-        if(ocio_total/budget_val >= 0.3){
+        if(ocio_total/budget_val >= 0.1){
             Notification.Builder nb = mNotificationUtils.
                     getAndroidChannelNotification("Alerta de gastos",
-                            "Estás gastando mucho en Ocio, específicamente" +
+                            "Estás gastando mucho en Ocio, específicamente " +
                     ocio_total);
+            mNotificationUtils.getManager().notify(100, nb.build());
+        }
+
+        if(hogar_total/budget_val >= 0.1){
+            Notification.Builder nb = mNotificationUtils.
+                    getAndroidChannelNotification("Alerta de gastos",
+                            "Estás gastando mucho en Hogar, específicamente " +
+                                    hogar_total);
             mNotificationUtils.getManager().notify(101, nb.build());
+        }
+
+        if(salud_total/budget_val >= 0.1){
+            Notification.Builder nb = mNotificationUtils.
+                    getAndroidChannelNotification("Alerta de gastos",
+                            "Estás gastando mucho en Salud, específicamente " +
+                                    salud_total);
+            mNotificationUtils.getManager().notify(102, nb.build());
+        }
+
+        if(indispensable_total/budget_val >= 0.1){
+            Notification.Builder nb = mNotificationUtils.
+                    getAndroidChannelNotification("Alerta de gastos",
+                            "Estás gastando mucho en Indispensable, específicamente " +
+                                    indispensable_total);
+            mNotificationUtils.getManager().notify(103, nb.build());
         }
     }
 }
