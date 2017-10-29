@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
+import android.support.v7.app.NotificationCompat;
 
 /**
  * Created by sebastian on 28-10-17.
@@ -52,6 +53,7 @@ public class NotificationUtils extends ContextWrapper {
                 .setContentTitle(title)
                 .setContentText(body)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setStyle(new Notification.BigTextStyle());
     }
 }

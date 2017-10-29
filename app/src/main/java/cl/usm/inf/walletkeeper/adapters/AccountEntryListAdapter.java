@@ -102,7 +102,9 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         List<AccountEntryData> catList = getByCategory(cat,data);
         float total = 0;
         for(AccountEntryData item : catList) {
-            total = total + item.getSignedValue();
+            if(item.isExpense()) {
+                total = total + item.getSignedValue();
+            }
         }
         return total;
     }
