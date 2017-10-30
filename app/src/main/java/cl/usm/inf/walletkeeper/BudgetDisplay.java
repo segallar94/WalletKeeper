@@ -1,12 +1,22 @@
 package cl.usm.inf.walletkeeper;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
 import cl.usm.inf.walletkeeper.adapters.BudgetAdapter;
+import cl.usm.inf.walletkeeper.db.DbHelper;
+import cl.usm.inf.walletkeeper.structs.AccountEntryData;
+import cl.usm.inf.walletkeeper.structs.Category;
 
 public class BudgetDisplay extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -22,23 +32,21 @@ public class BudgetDisplay extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.budget_hint);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //  mRecyclerView = (RecyclerView) findViewById(R.id.BudgetRecycler);
-
         SharedPreferences sp = getSharedPreferences("PREF_NAME",MODE_PRIVATE);
         String data = sp.getString("budget","0");
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
- //       mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
-   //     mLayoutManager = new LinearLayoutManager(this);
-     //   mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-//        mAdapter = new BudgetAdapter(data,this);
-  //      mRecyclerView.setAdapter(mAdapter);
         TextView budget = (TextView) findViewById(R.id.budgetInfo);
         budget.setText(data);
+
+        //Lista de categorias
+        SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
+        List<Category> categories = DbHelper.GET_CATEGORY(db);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerCategory);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new BudgetAdapter(this,categories);
+        mRecyclerView.setAdapter(mAdapter);
+        db.close();
     }
 
     @Override
