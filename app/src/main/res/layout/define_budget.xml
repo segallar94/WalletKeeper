@@ -1,29 +1,17 @@
-<android.support.constraint.ConstraintLayout
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="24dp"
+    android:layout_marginRight="24dp"
+    android:layout_marginTop="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#f7f7ea"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentTop="true">
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.501"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        tools:layout_editor_absoluteY="0dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <EditText
             android:id="@+id/entryBudget"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:layout_marginTop="10dp"
@@ -32,24 +20,64 @@
             android:inputType="numberDecimal"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/defineBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/define_btn"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="1dp"
+            android:layout_toEndOf="@id/entryBudget"/>
 
-    <Button
-        android:id="@+id/defineBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="24dp"
-        android:elevation="0dp"
-        android:text="@string/define_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp" />
+        <TextView
+            android:id="@+id/Titulo"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="@string/SettingsTittle"
+            android:gravity="center"
+            android:layout_below="@id/entryBudget"/>
 
-</android.support.constraint.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/Titulo">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/Category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Ocio"
+                        />
+
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/Category"
+                        android:layout_marginStart="60dp"
+                        android:max="100"/>
+
+                    <TextView
+                        android:id="@+id/Percent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="15%"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@id/seekBar"
+                        android:layout_below="@id/Category"
+                        />
+                </RelativeLayout>
+        </RelativeLayout>
+
+
+</RelativeLayout>

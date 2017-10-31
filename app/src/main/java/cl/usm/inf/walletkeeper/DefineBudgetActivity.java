@@ -31,6 +31,7 @@ public class DefineBudgetActivity extends AppCompatActivity
     public void onClick(View view) {
         SharedPreferences.Editor spe = getSharedPreferences("PREF_NAME",MODE_PRIVATE).edit();
         spe.putString("budget",BudgetEntry.getText().toString());
+        spe.putString("budget_ini",BudgetEntry.getText().toString());
         spe.apply();
         spe.commit();
 

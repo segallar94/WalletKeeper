@@ -16,4 +16,5 @@
     <string name="add_entry_title">Añadir Gasto</string>
     <string name="isIncome">Ingreso</string>
     <string name="title_activity_categories_listing">Categorias</string>
+    <string name="SettingsTittle">Configuración de Ahorro</string>
 </resources>
