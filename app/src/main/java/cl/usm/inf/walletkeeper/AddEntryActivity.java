@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,7 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -36,7 +36,6 @@ public class AddEntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_add_entry);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.add_entry_title);
@@ -82,7 +81,8 @@ public class AddEntryActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, i);
             finish();
         }else{
-            Toast.makeText(this, R.string.no_empty_form_please,Toast.LENGTH_SHORT).show();
+            Snackbar.make(view, R.string.no_empty_form_please, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }
     }
 

@@ -16,7 +16,6 @@ import java.util.Locale;
 
 import cl.usm.inf.walletkeeper.R;
 import cl.usm.inf.walletkeeper.db.DbHelper;
-import cl.usm.inf.walletkeeper.structs.AccountEntryData;
 import cl.usm.inf.walletkeeper.structs.Category;
 
 
@@ -47,7 +46,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.ViewHolder
     @Override
     public BudgetAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, null);
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.icon_titl_desc_list_item, null);
 
         // create ViewHolder
         return new ViewHolder(itemLayoutView);

@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -152,13 +151,14 @@ public class EntriesListingActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            Intent intent = new Intent(this, CategoriesListingActivity.class);
+            startActivity(intent);
         } else if (id == R.id.budgetviewer) {
-            Intent intent = new Intent(EntriesListingActivity.this,BudgetDisplay.class);
+            Intent intent = new Intent(this,BudgetDisplay.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_manage) { //aqui se define el presupuesto
-            Intent intent = new Intent(EntriesListingActivity.this,DefineBudgetActivity.class);
+            Intent intent = new Intent(this,DefineBudgetActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_share) {

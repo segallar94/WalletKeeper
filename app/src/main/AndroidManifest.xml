@@ -25,8 +25,11 @@
         <activity android:name=".DefineBudgetActivity" />
         <activity
             android:name=".BudgetDisplay"
-            android:theme="@style/AppTheme.CustomTheme"/>
-
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity
+            android:name=".CategoriesListingActivity"
+            android:label="@string/title_activity_categories_listing"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

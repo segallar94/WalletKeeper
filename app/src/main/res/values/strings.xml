@@ -15,4 +15,5 @@
     <string name="define_btn">Definir</string>
     <string name="add_entry_title">Añadir Gasto</string>
     <string name="isIncome">Ingreso</string>
+    <string name="title_activity_categories_listing">Categorias</string>
 </resources>

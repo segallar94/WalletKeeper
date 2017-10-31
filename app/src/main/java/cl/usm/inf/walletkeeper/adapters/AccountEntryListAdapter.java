@@ -79,9 +79,6 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         return (List<AccountEntryData> ) (new ArrayList<AccountEntryData>(itemsData));
     }
 
-    public List<AccountEntryData> getByCategory(int cat){
-        return getByCategory(cat, getListClone());
-    }
 
     public float getTotalByCategory(int cat){
         return getTotalByCategory(cat, getListClone());
