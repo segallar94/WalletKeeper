@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="expenseColor">#f00</color>
     <color name="incomeColor">#0f0</color>
+    <color name="niceCyan">#009FE3</color>
 </resources>

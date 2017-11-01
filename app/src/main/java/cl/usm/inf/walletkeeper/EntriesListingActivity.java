@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -207,7 +206,7 @@ public class EntriesListingActivity extends AppCompatActivity
     }
 
     public void loadData(){
-        SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
+        SQLiteDatabase db = new DbHelper(this).getReadableDatabase();
         //mRecordHistoryListAdapter = null;
         mRecordHistoryListAdapter = new AccountEntryListAdapter(this, DbHelper.GET_ENTRY(db));
         mRecordHistoryListRecycler.setAdapter(mRecordHistoryListAdapter);

@@ -41,7 +41,7 @@ public class AddEntryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.add_entry_title);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        editValueBox = (EditText) findViewById(R.id.entryValue);
+        editValueBox = (EditText) findViewById(R.id.catTitle);
         editDescBox = (EditText) findViewById(R.id.entryDescription);
         isIncome = (CheckBox) findViewById(R.id.entryIsIncome);
         selectCatBox = (Spinner) findViewById(R.id.categorySelector);
@@ -81,7 +81,7 @@ public class AddEntryActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, i);
             finish();
         }else{
-            Snackbar.make(view, R.string.no_empty_form_please, Snackbar.LENGTH_LONG)
+            Snackbar.make(view, R.string.no_empty_form_please, Snackbar.LENGTH_SHORT)
                     .setAction("Action", null).show();
         }
     }

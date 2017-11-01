@@ -44,7 +44,7 @@
             android:text="@string/isIncome" />
 
         <EditText
-            android:id="@+id/entryValue"
+            android:id="@+id/catTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/entryValue"
+            android:layout_below="@+id/catTitle"
             android:ems="10"
             android:hint="@string/desc_hint"
             android:inputType="textPersonName"

@@ -17,4 +17,7 @@
     <string name="isIncome">Ingreso</string>
     <string name="title_activity_categories_listing">Categorias</string>
     <string name="SettingsTittle">Configuración de Ahorro</string>
+    <string name="add_category_title">Añadir Categoria</string>
+    <string name="no_empty_title_please">Ingrese un Nombre</string>
+    <string name="category_hint">Categoria</string>
 </resources>

@@ -30,6 +30,9 @@
             android:name=".CategoriesListingActivity"
             android:label="@string/title_activity_categories_listing"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddCategoryActivity"
+            android:theme="@style/AppTheme.CustomTheme" />
     </application>
 
 </manifest>
