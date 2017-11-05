@@ -40,44 +40,14 @@
             android:gravity="center"
             android:layout_below="@id/entryBudget"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/Titulo">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/Category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="Ocio"
-                        />
-
-                    <SeekBar
-                        android:id="@+id/seekBar"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/Category"
-                        android:layout_marginStart="60dp"
-                        android:max="100"/>
-
-                    <TextView
-                        android:id="@+id/Percent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="15%"
-                        android:layout_marginStart="20dp"
-                        android:layout_toEndOf="@id/seekBar"
-                        android:layout_below="@id/Category"
-                        />
-                </RelativeLayout>
-        </RelativeLayout>
-
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerSaving"
+                android:layout_below="@+id/Titulo"
+                android:layout_width="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:context="cl.usm.inf.walletkeeper.DefineBudgetActivity"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"/>
 
 </RelativeLayout>
