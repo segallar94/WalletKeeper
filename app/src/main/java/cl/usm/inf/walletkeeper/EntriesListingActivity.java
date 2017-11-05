@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -155,18 +156,21 @@ public class EntriesListingActivity extends AppCompatActivity
             /// TODO arreglarlo para que no considere los ingresos en el calculo
 
                 float budget_val = Float.valueOf(budget.getString("budget_ini","0"));
+                float percent = budget.getInt(Cat.getName(),0)/100;
                 float total = (mRecordHistoryListAdapter.getTotalByCategory(Cat.getId()) + Price*isExpense )* -1;
                 String totalString = String.format(Locale.US, "$%d",
                         Math.abs((long) total));
 
-                if (total/budget_val >= 0.1) {
-                    Notification.Builder nb = mNotificationUtils.
-                            getAndroidChannelNotification("Alerta de gastos",
-                                    "Estás gastando mucho en " + Cat.getName() +
-                                            ", específicamente " +
-                                            totalString);
-                    nb.setContentIntent(resultPendingIntent);
-                    mNotificationUtils.getManager().notify(notificationId, nb.build());
+                if (percent != 0f){
+                    if (total/budget_val >= percent) {
+                        Notification.Builder nb = mNotificationUtils.
+                                getAndroidChannelNotification("Alerta de gastos",
+                                        "Estás gastando mucho en " + Cat.getName() +
+                                                ", específicamente " +
+                                                totalString);
+                        nb.setContentIntent(resultPendingIntent);
+                        mNotificationUtils.getManager().notify(notificationId, nb.build());
+                    }
                 }
                 db.close();
             }else if (resultCode == RESULT_CANCELED) {
