@@ -186,7 +186,8 @@ public class EntriesListingActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(this,PlotActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
             Intent intent = new Intent(this, CategoriesListingActivity.class);
             startActivity(intent);
@@ -197,11 +198,6 @@ public class EntriesListingActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) { //aqui se define el presupuesto
             Intent intent = new Intent(this,DefineBudgetActivity.class);
             startActivity(intent);
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

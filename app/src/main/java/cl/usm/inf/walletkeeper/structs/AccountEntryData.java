@@ -3,8 +3,6 @@ package cl.usm.inf.walletkeeper.structs;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
-import com.google.gson.Gson;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -80,9 +78,6 @@ public class AccountEntryData implements Comparable<AccountEntryData>{
             return (this.name.compareTo(o.name));
         }
     }
-
-    @Override
-    public String toString() { return new Gson().toJson(this); }
 
     @Override
     public int hashCode() {

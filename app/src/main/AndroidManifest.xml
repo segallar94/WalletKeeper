@@ -33,6 +33,7 @@
         <activity
             android:name=".AddCategoryActivity"
             android:theme="@style/AppTheme.CustomTheme" />
+        <activity android:name=".PlotActivity"></activity>
     </application>
 
 </manifest>

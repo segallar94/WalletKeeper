@@ -129,6 +129,29 @@ public class DbHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public static List<AccountEntryData> GET_ENTRY_BY_CATEGORY(SQLiteDatabase db, Category cat) {
+        List<AccountEntryData> data = new ArrayList<AccountEntryData>();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + AccountEntries.TABLE_NAME + INNER_JOIN + Categories.TABLE_NAME + ON + AccountEntries.CATEGORY_ID + EQUALS + Categories._ID + WHERE + Categories._ID + EQUALS + cat.getId(), null);
+        if (c.moveToFirst()) {
+            do {
+                data.add(new AccountEntryData(
+                        c.getFloat(c.getColumnIndexOrThrow(AccountEntries.PRICE)),
+                        c.getString(c.getColumnIndexOrThrow(AccountEntries.NAME)),
+                        new Category(c.getInt(c.getColumnIndexOrThrow(Categories._ID)),
+                                c.getString(c.getColumnIndexOrThrow(Categories.NAME)),
+                                c.getInt(c.getColumnIndexOrThrow(Categories.RESOURCEID))
+                        ),
+                        new Date(c.getInt((c.getColumnIndexOrThrow(AccountEntries.DATE))) * 1000L)
+                ));
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        Collections.sort(data);
+        return data;
+    }
+
     public static List<Category> GET_CATEGORY(SQLiteDatabase db) {
         List<Category> data = new ArrayList<Category>();
 
