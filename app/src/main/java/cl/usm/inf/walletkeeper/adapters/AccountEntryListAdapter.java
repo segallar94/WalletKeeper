@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -70,10 +68,7 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         return itemsData.size();
     }
 
-    public void addItem(AccountEntryData item){
-        itemsData.add(item);
-        Collections.sort(this.itemsData);
-    }
+
 
     public List<AccountEntryData> getListClone() {
         return (List<AccountEntryData> ) (new ArrayList<AccountEntryData>(itemsData));
@@ -106,8 +101,4 @@ public class AccountEntryListAdapter extends RecyclerView.Adapter<AccountEntryLi
         return total;
     }
 
-    @Override
-    public String toString(){
-        return new Gson().toJson(this.itemsData);
-    }
 }
