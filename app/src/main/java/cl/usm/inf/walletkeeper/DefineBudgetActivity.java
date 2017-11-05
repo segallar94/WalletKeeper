@@ -3,6 +3,7 @@ package cl.usm.inf.walletkeeper;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.List;
+import java.util.Locale;
 
 import cl.usm.inf.walletkeeper.adapters.CategorySeekbarAdapter;
 import cl.usm.inf.walletkeeper.db.DbHelper;
@@ -56,8 +58,12 @@ public class DefineBudgetActivity extends AppCompatActivity
         spe.putString("budget_ini",BudgetEntry.getText().toString());
         spe.apply();
         spe.commit();
+        String budget = String.format(Locale.US, "$%d",
+                Math.abs((long)Integer.valueOf( BudgetEntry.getText().toString())));
 
-        finish();
+        Snackbar.make(view, "Se definió un presupuesto de $"
+                + budget, Snackbar.LENGTH_SHORT)
+                .setAction("Action", null).show();
     }
 
     @Override

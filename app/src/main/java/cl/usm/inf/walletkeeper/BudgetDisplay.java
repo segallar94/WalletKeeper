@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import cl.usm.inf.walletkeeper.adapters.AccountEntryListAdapter;
 import cl.usm.inf.walletkeeper.adapters.BudgetAdapter;
@@ -36,7 +37,9 @@ public class BudgetDisplay extends AppCompatActivity {
         String data = sp.getString("budget","0");
 
         TextView budget = (TextView) findViewById(R.id.budgetInfo);
-        budget.setText(data);
+        String budget_val = String.format(Locale.US, "$%d",
+                Math.abs((long)Integer.valueOf(data)));
+        budget.setText(budget_val);
 
         //Lista de categorias
         SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
