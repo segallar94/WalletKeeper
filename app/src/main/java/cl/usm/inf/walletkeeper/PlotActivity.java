@@ -72,7 +72,7 @@ public class PlotActivity extends AppCompatActivity {
         db.close();
         return thing;
     }
-    
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
