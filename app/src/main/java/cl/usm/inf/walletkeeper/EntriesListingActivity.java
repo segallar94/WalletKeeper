@@ -132,6 +132,7 @@ public class EntriesListingActivity extends AppCompatActivity
             /// TODO arreglarlo para que no considere los ingresos en el calculo
 
                 float budget_val = Float.valueOf(budget.getString("budget_ini","0"));
+                float budget_actual = Float.valueOf(budget.getString("budget","0"));
                 float percent = budget.getInt(Cat.getName(),0)/100;
                 float total = (mRecordHistoryListAdapter.getTotalByCategory(Cat.getId()) + Price*isExpense )* -1;
                 String totalString = String.format(Locale.US, "$%d",
@@ -147,6 +148,14 @@ public class EntriesListingActivity extends AppCompatActivity
                         nb.setContentIntent(resultPendingIntent);
                         mNotificationUtils.getManager().notify(notificationId, nb.build());
                     }
+                }
+
+                if (budget_actual <= 0f){
+                    Notification.Builder nb = mNotificationUtils.
+                            getAndroidChannelNotification("Alerta de presupuesto",
+                                    "Hey! Te has pasado del presupuesto!");
+                    nb.setContentIntent(resultPendingIntent);
+                    mNotificationUtils.getManager().notify(99999, nb.build());
                 }
                 db.close();
             }else if (resultCode == RESULT_CANCELED) {
