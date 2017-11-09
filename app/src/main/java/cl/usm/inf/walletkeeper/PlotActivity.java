@@ -80,7 +80,9 @@ public class PlotActivity extends AppCompatActivity {
     private float sumPrices(List<AccountEntryData> ls){
         float val = 0;
         for (AccountEntryData d : ls){
-            val += d.getSignedValue();
+            if(d.isExpense()) {
+                val += d.getSignedValue();
+            }
         }
         return Math.abs(val);
     }
