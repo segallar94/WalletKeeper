@@ -24,4 +24,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.androidplot.** { *; }
+-keep class com.androidplot.** {
+  public *;
+}

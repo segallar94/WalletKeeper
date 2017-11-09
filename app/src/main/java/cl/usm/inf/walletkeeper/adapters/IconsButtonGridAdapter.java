@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import cl.usm.inf.walletkeeper.R;
 
@@ -81,6 +80,6 @@ public class IconsButtonGridAdapter extends BaseAdapter implements AdapterView.O
         selected = position;
         view.setBackgroundResource(R.drawable.grid_list_selector);
         view.setSelected(true);
-        Toast.makeText(context, "Clicked " + selected, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Clicked " + selected, Toast.LENGTH_SHORT).show();
    }
 }
